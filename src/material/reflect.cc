@@ -16,18 +16,18 @@
 using namespace cherry::math;
 
 namespace cherry {
-Color ReflectMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
-                                Vector3d const& n) {
-  auto const kD = 1 - Fresnel(wi.Normalized(), n, 1, ior_);
-  auto const kS = CookTorrance(wi, wo, n, 2, 1, ior_);
-  return n.Dot(wo) > 0.0 ? ks_ * kS + kD * kd_ * kPiInv : Color(0.0);
+auto ReflectMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
+                               Vector3d const& n) -> Color {
+  auto const kD = 1 - Fresnel(wi.Normalized(), n, 1, ior);
+  auto const kS = CookTorrance(wi, wo, n, 2, 1, ior);
+  return n.Dot(wo) > 0.0 ? ks * kS + kD * kd * PI_INV : Color(0.0);
 }
 
-Color ReflectMaterial::Sample(Vector3d const& wi, Vector3d const& n) {
+auto ReflectMaterial::Sample(Vector3d const& wi, Vector3d const& n) -> Color {
   return Reflect(wi.Normalized(), n);
 }
-double ReflectMaterial::Pdf(Vector3d const& wi, Vector3d const& wo,
-                            Vector3d const& n) {
+auto ReflectMaterial::Pdf(Vector3d const& wi, Vector3d const& wo,
+                          Vector3d const& n) -> double {
   return 1;
 }
 }  // namespace cherry

@@ -11,27 +11,21 @@
 #ifndef CHERRY_CORE_RASTERIZER
 #define CHERRY_CORE_RASTERIZER
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "../math/vector.h"
+#include "renderer.h"
 #include "scene.h"
 
 namespace cherry {
-class Rasterizer {
+class Rasterizer : public Renderer {
  public:
-  explicit Rasterizer(Scene* scene, const uint32_t& width,
-                      const uint32_t& height)
-      : width_(width), height_(height), scene_(scene) {}
+  explicit Rasterizer(const std::shared_ptr<Scene>& scene,
+                      const uint32_t& width, const uint32_t& height)
+      : Renderer(scene, width, height) {}
 
-  void Render();
-  void SavePpm(const std::string& file_name = "binary");
-
- private:
-  uint32_t width_;
-  uint32_t height_;
-  std::shared_ptr<Scene> scene_;
-  std::vector<math::Color> frame_buffer_;
+  void Render() override;
 };
 }  // namespace cherry
 

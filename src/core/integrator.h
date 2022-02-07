@@ -13,12 +13,12 @@ class Integrator {
   Integrator(const Integrator&) = delete;
   Integrator(Integrator&&) = delete;
 
-  Integrator& operator=(const Integrator&) = delete;
-  Integrator& operator=(Integrator&&) = delete;
+  auto operator=(const Integrator&) -> Integrator& = delete;
+  auto operator=(Integrator&&) -> Integrator& = delete;
 
   virtual ~Integrator() = default;
-  virtual math::Point3 Li(const Ray& ray,
-                          const std::shared_ptr<Scene>& scene) = 0;
+  virtual auto Li(const Ray& ray, const std::shared_ptr<Scene>& scene)
+      -> math::Point3 = 0;
 };
 }  // namespace cherry
 

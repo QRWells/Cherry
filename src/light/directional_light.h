@@ -9,26 +9,26 @@ struct DirectionalLight final : public Light {
                             const math::Vector3d& at, const double& r,
                             const double& _intensity)
       : Light(_intensity),
-        shoot_from(position),
-        direction(at - position),
-        radius(r) {
-    GenerateOrthonormalBasis(direction, tangent_x, tangent_y);
-    tangent_x *= radius;
-    tangent_y *= radius;
-    auto const kR = std::sqrt(radius * radius + direction.Norm2());
-    auto const kH = kR - direction.Norm();
-    pdf = 1.0 / (kR * kH * k2Pi);
+        shoot_from_(position),
+        direction_(at - position),
+        radius_(r) {
+    GenerateOrthonormalBasis(direction_, tangent_x_, tangent_y_);
+    tangent_x_ *= radius_;
+    tangent_y_ *= radius_;
+    auto const kR = std::sqrt(radius_ * radius_ + direction_.Norm2());
+    auto const kH = kR - direction_.Norm();
+    pdf_ = 1.0 / (kR * kH * PI_TIMES_2_INV);
   }
 
   void Sample(Intersection&, double&) override;
 
  private:
-  math::Vector3d shoot_from;
-  math::Vector3d direction;
-  math::Vector3d tangent_x;
-  math::Vector3d tangent_y;
-  double radius;
-  double pdf;
+  math::Vector3d shoot_from_;
+  math::Vector3d direction_;
+  math::Vector3d tangent_x_;
+  math::Vector3d tangent_y_;
+  double radius_;
+  double pdf_;
 };
 }  // namespace cherry
 

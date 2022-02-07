@@ -1,7 +1,7 @@
 // Copyright (c) 2021 QRWells. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
-// 
+//
 // This file is part of Project Cherry.
 // File Name   : dielectric.h
 // Author      : QRWells
@@ -20,11 +20,12 @@ class DielectricMaterial final : public Material {
                      double const& ior = 1.4)
       : Material(kd, ks, Attribute::kDielectric, {}, ior) {}
 
-  math::Color Evaluate(math::Vector3d const&, math::Vector3d const&,
-                       math::Vector3d const&) override;
-  math::Vector3d Sample(math::Vector3d const&, math::Vector3d const&) override;
-  double Pdf(math::Vector3d const&, math::Vector3d const&,
-             math::Vector3d const&) override;
+  auto Evaluate(math::Vector3d const&, math::Vector3d const&,
+                math::Vector3d const&) -> math::Color override;
+  auto Sample(math::Vector3d const&, math::Vector3d const&)
+      -> math::Vector3d override;
+  auto Pdf(math::Vector3d const&, math::Vector3d const&, math::Vector3d const&)
+      -> double override;
 };
 }  // namespace cherry
 

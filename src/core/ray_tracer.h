@@ -11,44 +11,35 @@
 #ifndef CHERRY_CORE_RAY_TRACER
 #define CHERRY_CORE_RAY_TRACER
 
-#include <string>
+#include <utility>
 #include <vector>
 
 #include "integrator.h"
+#include "renderer.h"
 #include "scene.h"
 
 namespace cherry {
 
-class RayTracer {
+class RayTracer final : public Renderer {
  public:
   /**
    * \brief samples per pixel
    */
-  size_t spp_ = 64;
+  size_t spp = 64;
 
   explicit RayTracer(const std::shared_ptr<Scene>& scene, const uint32_t& width,
                      const uint32_t& height,
-                     const std::shared_ptr<Integrator>& integrator,
+                     std::shared_ptr<Integrator> integrator,
                      const size_t& spp = 64)
-      : spp_(spp),
-        width_(width),
-        height_(height),
-        scene_(scene),
-        frame_buffer_(width_ * height_),
-        integrator_(integrator) {
-    scene_->BuildBvh();
+      : Renderer(scene, width, height),
+        spp(spp),
+        integrator_(std::move(integrator)) {
+    scene->BuildBvh();
   }
 
-  ~RayTracer() = default;
-
-  void Render();
-  void SavePpm(const std::string& file_name = "binary");
+  void Render() override;
 
  private:
-  uint32_t width_;
-  uint32_t height_;
-  std::shared_ptr<Scene> scene_;
-  std::vector<math::Vector3d> frame_buffer_;
   std::shared_ptr<Integrator> integrator_;
 };
 }  // namespace cherry

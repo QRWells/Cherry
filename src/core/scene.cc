@@ -15,12 +15,12 @@
 namespace cherry {
 
 Scene::Scene(const std::shared_ptr<Camera>& camera)
-    : emit_area_sum_(0), camera_(camera) {}
-const std::vector<std::shared_ptr<Object>>& Scene::GetObjects() const {
+    : emit_area_sum(0), camera(camera) {}
+auto Scene::GetObjects() const -> const std::vector<std::shared_ptr<Object>>& {
   return objects_;
 }
 
-const std::vector<std::shared_ptr<Object>>& Scene::GetLights() const {
+auto Scene::GetLights() const -> const std::vector<std::shared_ptr<Object>>& {
   return lights_;
 }
 
@@ -33,11 +33,12 @@ void Scene::Add(const std::shared_ptr<Object>& object) {
   objects_.emplace_back(object);
   if (object->HasEmission()) {
     lights_.emplace_back(object);
-    emit_area_sum_ += object->GetSurfaceArea();
+    emit_area_sum += object->GetSurfaceArea();
   }
 }
 
-bool Scene::Intersect(const Ray& ray, Intersection& intersection) const {
+auto Scene::Intersect(const Ray& ray, Intersection& intersection) const
+    -> bool {
   return bvh_.Intersect(ray, intersection);
 }
 

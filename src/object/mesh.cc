@@ -13,9 +13,9 @@
 namespace cherry {
 
 void Mesh::LoadObj(std::string const&) {}
-Box Mesh::GetBounds() { return bounding_box_; }
-bool Mesh::Intersect(Ray const&, Intersection&) const { return false; }
+auto Mesh::GetBounds() -> Box { return bounding_box; }
+auto Mesh::Intersect(Ray const&, Intersection&) const -> bool { return false; }
 void Mesh::Sample(Intersection&, double&) {}
-bool Mesh::HasEmission() const { return false; }
-double Mesh::GetSurfaceArea() const { return 0.0; }
+auto Mesh::HasEmission() const -> bool { return false; }
+auto Mesh::GetSurfaceArea() const -> double { return 0.0; }
 }  // namespace cherry

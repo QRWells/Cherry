@@ -5,11 +5,12 @@
 #include "../../utility/random.h"
 
 namespace cherry {
-bool Triangle::Intersect(const Ray& ray, Intersection& intersection) const {
+auto Triangle::Intersect(const Ray& ray, Intersection& intersection) const
+    -> bool {
   if (normal_.Dot(ray.direction) > 0) return false;
   auto const kPVec = ray.direction.Cross(e2_);
   auto const kDet = e1_.Dot(kPVec);
-  if (fabs(kDet) < kEpsilon) return false;
+  if (fabs(kDet) < EPSILON) return false;
 
   auto const kDetInv = 1.0 / kDet;
   auto const kTVec = ray.origin - v0_;
@@ -30,7 +31,7 @@ bool Triangle::Intersect(const Ray& ray, Intersection& intersection) const {
 
   return true;
 }
-Box Triangle::GetBounds() {
+auto Triangle::GetBounds() -> Box {
   auto const kMin1 = math::Min(v0_, v1_);
   auto min = math::Min(kMin1, v2_);
   auto const kMax1 = math::Max(v0_, v1_);
@@ -46,10 +47,10 @@ void Triangle::Sample(Intersection& intersection, double& pdf) {
   intersection.material = material_;
   pdf = 1.0 / GetSurfaceArea();
 }
-bool Triangle::HasEmission() const {
-  return material_->GetEmission().Norm2() > kEpsilon;
+auto Triangle::HasEmission() const -> bool {
+  return material_->GetEmission().Norm2() > EPSILON;
 }
-double Triangle::GetSurfaceArea() const {
+auto Triangle::GetSurfaceArea() const -> double {
   auto const kE1 = v1_ - v0_;
   auto const kE2 = v2_ - v0_;
   return kE1.Cross(kE2).Norm() * 0.5;

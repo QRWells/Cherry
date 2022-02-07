@@ -14,12 +14,13 @@
 #include "../../utility/random.h"
 
 namespace cherry {
-bool Plane::Intersect(Ray const& ray, Intersection& intersection) const {
+auto Plane::Intersect(Ray const& ray, Intersection& intersection) const
+    -> bool {
   if (ray.direction.Dot(normal_) > 0) return false;
   auto const kT =
       normal_.Dot(position_ - ray.origin) / normal_.Dot(ray.direction);
   if (kT < 0) return false;
-  if (e1_.Norm2() > kEpsilon && e2_.Norm2() > kEpsilon) {
+  if (e1_.Norm2() > EPSILON && e2_.Norm2() > EPSILON) {
     auto const kP = ray(kT);
     auto const kE = kP - position_;
     auto const kT1 = kE.Dot(e1_) / e1_.Norm2();
@@ -32,9 +33,9 @@ bool Plane::Intersect(Ray const& ray, Intersection& intersection) const {
   intersection.normal = normal_;
   return true;
 }
-Box Plane::GetBounds() { return {position_, position_ + e1_ + e2_}; }
+auto Plane::GetBounds() -> Box { return {position_, position_ + e1_ + e2_}; }
 void Plane::Sample(Intersection& intersection, double& pdf) {
-  if (e1_.Norm2() < kEpsilon || e2_.Norm2() < kEpsilon) [[unlikely]] {
+  if (e1_.Norm2() < EPSILON || e2_.Norm2() < EPSILON) [[unlikely]] {
   } else [[likely]] {
     auto const kR1 = GetRandomDouble();
     auto const kR2 = GetRandomDouble();
@@ -44,11 +45,11 @@ void Plane::Sample(Intersection& intersection, double& pdf) {
     pdf = 1.0 / GetSurfaceArea();
   }
 }
-bool Plane::HasEmission() const {
-  return material_->GetEmission().Norm2() > kEpsilon;
+auto Plane::HasEmission() const -> bool {
+  return material_->GetEmission().Norm2() > EPSILON;
 }
-double Plane::GetSurfaceArea() const {
-  if (e1_.Norm2() < kEpsilon || e2_.Norm2() < kEpsilon) [[unlikely]] {
+auto Plane::GetSurfaceArea() const -> double {
+  if (e1_.Norm2() < EPSILON || e2_.Norm2() < EPSILON) [[unlikely]] {
     return std::numeric_limits<double>::max();
   }
   return e1_.Norm() * e2_.Norm();

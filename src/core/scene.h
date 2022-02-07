@@ -23,8 +23,8 @@ class Scene {
  public:
   explicit Scene(const std::shared_ptr<Camera>& camera);
 
-  double emit_area_sum_;
-  const std::shared_ptr<Camera> camera_;
+  double emit_area_sum;
+  const std::shared_ptr<Camera> camera;
 
  private:
   // hittable objects
@@ -35,11 +35,13 @@ class Scene {
   Bvh bvh_;
 
  public:
-  [[nodiscard]] const std::vector<std::shared_ptr<Object>>& GetObjects() const;
-  [[nodiscard]] const std::vector<std::shared_ptr<Object>>& GetLights() const;
+  [[nodiscard]] auto GetObjects() const
+      -> const std::vector<std::shared_ptr<Object>>&;
+  [[nodiscard]] auto GetLights() const
+      -> const std::vector<std::shared_ptr<Object>>&;
   void SampleLight(Intersection&, double&) const;
   void Add(const std::shared_ptr<Object>& object);
-  bool Intersect(const Ray& ray, Intersection& intersection) const;
+  auto Intersect(const Ray& ray, Intersection& intersection) const -> bool;
   void BuildBvh();
 };
 }  // namespace cherry

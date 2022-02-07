@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2021 QRWells. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
-// 
+//
 // This file is part of Project Cherry.
 // File Name   : box.h
 // Author      : QRWells
@@ -19,29 +19,27 @@ namespace cherry {
 struct Box {
  public:
   Box() = default;
-  Box(math::Point3 const& p) : min(p), max(p) {}
-  Box(math::Point3 const& min, math::Point3 const& max) : min(min), max(max) {
-    
-  }
+  explicit Box(math::Point3 const& p) : min(p), max(p) {}
+  Box(math::Point3 const& min, math::Point3 const& max) : min(min), max(max) {}
 
   math::Point3 min;
   math::Point3 max;
 
-  [[nodiscard]] math::Vector3d Centroid() const {
+  [[nodiscard]] auto Centroid() const -> math::Vector3d {
     return 0.5 * min + 0.5 * max;
   }
-  [[nodiscard]] math::Vector3d Diagonal() const { return max - min; }
-  [[nodiscard]] double SurfaceArea() const {
+  [[nodiscard]] auto Diagonal() const -> math::Vector3d { return max - min; }
+  [[nodiscard]] auto SurfaceArea() const -> double {
     auto const kDiagonal = Diagonal();
     return 2 * (kDiagonal.x * kDiagonal.y + kDiagonal.x * kDiagonal.z +
                 kDiagonal.y * kDiagonal.z);
   }
-  [[nodiscard]] int MaxExtent() const;
-  [[nodiscard]] math::Vector3d Offset(math::Point3 const& p) const;
-  [[nodiscard]] bool Intersect(Ray const&, Intersection&) const;
-  [[nodiscard]] Box Union(Box const&) const;
-  [[nodiscard]] bool Overlaps(Box const&) const;
-  [[nodiscard]] bool Inside(math::Point3 const&) const;
+  [[nodiscard]] auto MaxExtent() const -> int;
+  [[nodiscard]] auto Offset(math::Point3 const& p) const -> math::Vector3d;
+  [[nodiscard]] auto Intersect(Ray const&, Intersection&) const -> bool;
+  [[nodiscard]] auto Union(Box const&) const -> Box;
+  [[nodiscard]] auto Overlaps(Box const&) const -> bool;
+  [[nodiscard]] auto Inside(math::Point3 const&) const -> bool;
 };
 }  // namespace cherry
 

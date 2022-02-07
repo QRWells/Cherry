@@ -11,27 +11,30 @@
 #ifndef CHERRY_OBJECT_PRIMITIVE_TRIANGLE
 #define CHERRY_OBJECT_PRIMITIVE_TRIANGLE
 
+#include <utility>
+
 #include "../../core/object.h"
 
 namespace cherry {
 class Triangle final : public Object {
  public:
   Triangle(const math::Point3& v0, const math::Point3& v1,
-           const math::Point3& v2, const std::shared_ptr<Material>& material)
+           const math::Point3& v2, std::shared_ptr<Material> material)
       : v0_(v0),
         v1_(v1),
         v2_(v2),
         e1_(v1 - v0),
         e2_(v2 - v0),
-        material_(material) {
+        material_(std::move(material)) {
     normal_ = e1_.Cross(e2_).Normalized();
   }
 
-  bool Intersect(const Ray&, Intersection&) const override;
-  Box GetBounds() override;
-  void Sample(Intersection&, double&) override;
-  [[nodiscard]] bool HasEmission() const override;
-  [[nodiscard]] double GetSurfaceArea() const override;
+  auto Intersect(const Ray &ray, Intersection &intersection) const
+      -> bool override;
+  auto GetBounds() -> Box override;
+  void Sample(Intersection &intersection, double &pdf) override;
+  [[nodiscard]] auto HasEmission() const -> bool override;
+  [[nodiscard]] auto GetSurfaceArea() const -> double override;
 
  private:
   math::Point3 v0_, v1_, v2_;

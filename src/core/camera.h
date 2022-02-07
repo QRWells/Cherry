@@ -19,24 +19,25 @@ class Camera {
  public:
   Camera(const math::Point3& pos, const double& fov, const double& aspect_ratio,
          const double& aperture, const double& focal_distance)
-      : aperture_(aperture),
-        focal_distance_(focal_distance),
-        fov_(fov),
-        aspect_ratio_(aspect_ratio),
-        position_(pos) {}
+      : aperture(aperture),
+        focal_distance(focal_distance),
+        fov(fov),
+        aspect_ratio(aspect_ratio),
+        position(pos) {}
   virtual ~Camera() = default;
-  [[nodiscard]] virtual Ray GenerateRay(const double&,const double&) const = 0;
+  [[nodiscard]] virtual auto GenerateRay(const double& x, const double& y) const
+      -> Ray = 0;
 
  protected:
-  double aperture_;
-  double focal_distance_;
-  double fov_;
-  double aspect_ratio_;
-  math::Vector3d u_, v_, w_;
-  math::Vector3d position_;
-  math::Vector3d horizontal_;
-  math::Vector3d vertical_;
-  math::Point3 top_left_;
+  double aperture;
+  double focal_distance;
+  double fov;
+  double aspect_ratio;
+  math::Vector3d u, v, w;
+  math::Vector3d position;
+  math::Vector3d horizontal;
+  math::Vector3d vertical;
+  math::Point3 top_left;
 };
 
 class PerspectiveCamera final : public Camera {
@@ -46,26 +47,27 @@ class PerspectiveCamera final : public Camera {
                     const double& aspect_ratio, const double& aperture,
                     const double& focal_distance)
       : Camera(look_from, fov, aspect_ratio, aperture, focal_distance) {
-    auto const kTheta = DegToRad(fov_);
+    auto const kTheta = DegToRad(fov);
     auto const kH = tan(kTheta / 2);
     auto const kViewportHeight = 2.0 * kH;
-    auto const kViewportWidth = kViewportHeight * aspect_ratio_;
+    auto const kViewportWidth = kViewportHeight * aspect_ratio;
 
-    w_ = (look_from - look_at).Normalized();
-    u_ = view_up.Cross(w_).Normalized();
-    v_ = w_.Cross(u_);
+    w = (look_from - look_at).Normalized();
+    u = view_up.Cross(w).Normalized();
+    v = w.Cross(u);
 
-    horizontal_ = kViewportWidth * u_ * focal_distance_;
-    vertical_ = -kViewportHeight * v_ * focal_distance_;
-    top_left_ =
-        position_ - horizontal_ / 2 - vertical_ / 2 - w_ * focal_distance_;
+    horizontal = kViewportWidth * u * focal_distance;
+    vertical = -kViewportHeight * v * focal_distance;
+    top_left = position - horizontal / 2 - vertical / 2 - w * focal_distance;
   }
-  [[nodiscard]] Ray GenerateRay(const double&, const double&) const override;
+  [[nodiscard]] auto GenerateRay(const double& x, const double& y) const
+      -> Ray override;
 };
 
 class OrthographicCamera final : public Camera {
  public:
-  [[nodiscard]] Ray GenerateRay(const double&, const double&) const override;
+  [[nodiscard]] auto GenerateRay(const double& x, const double& y) const
+      -> Ray override;
 };
 }  // namespace cherry
 

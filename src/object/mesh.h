@@ -22,22 +22,24 @@
 namespace cherry {
 class Mesh final : public Object {
  public:
-  void LoadObj(const std::string&);
-  Box GetBounds() override;
-  bool Intersect(const Ray&, Intersection&) const override;
-  void Sample(Intersection&, double&) override;
-  [[nodiscard]] bool HasEmission() const override;
-  [[nodiscard]] double GetSurfaceArea() const override;
+  void LoadObj(const std::string &);
 
-  uint32_t num_triangles_;
-  double area_;
-  Box bounding_box_;
-  Bvh bvh_;
-  std::shared_ptr<Material> material_;
-  std::vector<math::Vector3d> vertices_;
-  std::vector<uint32_t> vertex_index_;
-  std::vector<math::Vector2d> st_coordinates_;
-  std::vector<Triangle> triangles_;
+  auto Intersect(const Ray &ray, Intersection &intersection) const
+      -> bool override;
+  auto GetBounds() -> Box override;
+  void Sample(Intersection &intersection, double &pdf) override;
+  [[nodiscard]] auto HasEmission() const -> bool override;
+  [[nodiscard]] auto GetSurfaceArea() const -> double override;
+
+  uint32_t num_triangles;
+  double area;
+  Box bounding_box;
+  Bvh bvh;
+  std::shared_ptr<Material> material;
+  std::vector<math::Vector3d> vertices;
+  std::vector<uint32_t> vertex_index;
+  std::vector<math::Vector2d> st_coordinates;
+  std::vector<Triangle> triangles;
 };
 }  // namespace cherry
 

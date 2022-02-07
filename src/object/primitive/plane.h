@@ -11,6 +11,8 @@
 #ifndef CHERRY_OBJECT_PRIMITIVE_PLANE
 #define CHERRY_OBJECT_PRIMITIVE_PLANE
 
+#include <utility>
+
 #include "../../core/material.h"
 #include "../../core/object.h"
 
@@ -18,21 +20,22 @@ namespace cherry {
 class Plane final : public Object {
  public:
   Plane(const math::Point3& position, const math::Vector3d& e1,
-        const math::Vector3d& e2, const std::shared_ptr<Material>& material)
+        const math::Vector3d& e2, std::shared_ptr<Material> material)
       : e1_(e1),
         e2_(e2),
         position_(position),
         normal_(e1.Cross(e2).Normalized()),
-        material_(material) {}
+        material_(std::move(material)) {}
   Plane(const math::Point3& position, const math::Vector3d& normal,
-        const std::shared_ptr<Material>& material)
-      : position_(position), normal_(normal), material_(material) {}
+        std::shared_ptr<Material> material)
+      : position_(position), normal_(normal), material_(std::move(material)) {}
 
-  bool Intersect(Ray const&, Intersection&) const override;
-  Box GetBounds() override;
-  void Sample(Intersection&, double&) override;
-  [[nodiscard]] bool HasEmission() const override;
-  [[nodiscard]] double GetSurfaceArea() const override;
+  auto Intersect(const Ray& ray, Intersection& intersection) const
+      -> bool override;
+  auto GetBounds() -> Box override;
+  void Sample(Intersection& intersection, double& pdf) override;
+  [[nodiscard]] auto HasEmission() const -> bool override;
+  [[nodiscard]] auto GetSurfaceArea() const -> double override;
 
  private:
   math::Vector3d e1_, e2_;

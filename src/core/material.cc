@@ -11,8 +11,8 @@
 #include "material.h"
 
 namespace cherry {
-math::Vector3d Material::ToWorld(const math::Vector3d& a,
-                                 const math::Vector3d& n) {
+auto Material::ToWorld(const math::Vector3d& a, const math::Vector3d& n)
+    -> math::Vector3d {
   math::Vector3d c;
   if (std::fabs(n.x) > std::fabs(n.y)) {
     auto const kInvLen = 1.0 / std::sqrt(n.x * n.x + n.z * n.z);

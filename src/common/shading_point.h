@@ -1,7 +1,7 @@
 // Copyright (c) 2021 QRWells. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
-// 
+//
 // This file is part of Project Cherry.
 // File Name   : shading_point.h
 // Author      : QRWells
@@ -28,8 +28,8 @@ struct ShadingPoint {
   math::Vector3d tangent_x;
   math::Vector3d tangent_y;
 
-  [[nodiscard]] math::Vector3d ToLocal(math::Vector3d const&) const;
-  [[nodiscard]] math::Vector3d ToWorld(math::Vector3d const&) const;
+  [[nodiscard]] auto ToLocal(math::Vector3d const&) const -> math::Vector3d;
+  [[nodiscard]] auto ToWorld(math::Vector3d const&) const -> math::Vector3d;
 };
 }  // namespace cherry
 

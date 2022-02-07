@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2021 QRWells. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
-// 
+//
 // This file is part of Project Cherry.
 // File Name   : matrix.cc
 // Author      : QRWells
@@ -9,110 +9,112 @@
 // Description :
 
 #include "matrix.h"
+#include <array>
 
 namespace cherry::math {
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator=(Matrix4<T> const& m) noexcept {
+auto Matrix4<T>::operator=(Matrix4<T> const& m) noexcept -> Matrix4<T>& {
   if (this != &m) {
     this->last_index = m.last_index;
-    std::copy(m.value, m.value + 16, value);
+    std::copy(m.value_, m.value_ + 16, value_);
   }
   return *this;
 }
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator=(Matrix4<T>&& m) noexcept {
+auto Matrix4<T>::operator=(Matrix4<T>&& m) noexcept -> Matrix4<T>& {
   if (this != &m) {
-    this->last_index = m.last_index;
-    std::copy(m.value, m.value + 16, value);
+    this->last_index_ = m.last_index_;
+    std::copy(m.value_.begin(), m.value_.end(), value_.begin());
 
-    m.last_index = 0;
+    m.last_index_ = 0;
   }
   return *this;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::operator+(Matrix4<T> const& m) const {
+auto Matrix4<T>::operator+(Matrix4<T> const& m) const -> Matrix4<T> {
   auto result = Matrix4<T>();
-  for (auto i = 0; i < 16; ++i) result.value[i] = value[i] + m.value[i];
+  for (auto i = 0; i < 16; ++i) result.value_[i] = value_[i] + m.value_[i];
   return result;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::operator-(Matrix4<T> const& m) const {
+auto Matrix4<T>::operator-(Matrix4<T> const& m) const -> Matrix4<T> {
   auto result = Matrix4<T>();
-  for (auto i = 0; i < 16; ++i) result.value[i] = value[i] - m.value[i];
+  for (auto i = 0; i < 16; ++i) result.value_[i] = value_[i] - m.value_[i];
   return result;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::operator*(Matrix4<T> const& m) const {
+auto Matrix4<T>::operator*(Matrix4<T> const& m) const -> Matrix4<T> {
   auto result = Matrix4<T>();
   for (auto i = 0; i < 4; ++i)
     for (auto j = 0; j < 4; ++j)
-      result.value[i * 4 + j] = value[i * 4 + 0] * m.value[0 + j] +
-                                value[i * 4 + 1] * m.value[4 + j] +
-                                value[i * 4 + 2] * m.value[8 + j] +
-                                value[i * 4 + 3] * m.value[12 + j];
+      result.value_[i * 4 + j] = value_[i * 4 + 0] * m.value_[0 + j] +
+                                 value_[i * 4 + 1] * m.value_[4 + j] +
+                                 value_[i * 4 + 2] * m.value_[8 + j] +
+                                 value_[i * 4 + 3] * m.value_[12 + j];
 
   return result;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::operator*(T const& v) const {
+auto Matrix4<T>::operator*(T const& v) const -> Matrix4<T> {
   auto result = Matrix4<T>();
-  for (auto i = 0; i < 16; ++i) result.value[i] = value[i] * v;
+  for (auto i = 0; i < 16; ++i) result.value_[i] = value_[i] * v;
   return result;
 }
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator+=(Matrix4<T> const& m) {
+auto Matrix4<T>::operator+=(Matrix4<T> const& m) -> Matrix4<T>& {
   *this = operator+(m);
   return *this;
 }
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator-=(Matrix4<T> const& m) {
+auto Matrix4<T>::operator-=(Matrix4<T> const& m) -> Matrix4<T>& {
   *this = operator-(m);
   return *this;
 }
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator*=(Matrix4<T> const& m) {
+auto Matrix4<T>::operator*=(Matrix4<T> const& m) -> Matrix4<T>& {
   *this = operator*(m);
   return *this;
 }
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator*=(T const& v) {
+auto Matrix4<T>::operator*=(T const& v) -> Matrix4<T>& {
   *this = operator*(v);
   return *this;
 }
 
 template <Number T>
-Matrix4<T>& Matrix4<T>::operator<<(T const& v) {
-  value[last_index++] = v;
-  last_index %= 16;
+auto Matrix4<T>::operator<<(T const& v) -> Matrix4<T>& {
+  value_[last_index_++] = v;
+  last_index_ %= 16;
   return *this;
 }
 
 template <Number T>
-Matrix4<T>&Matrix4<T>::operator,(T const&v) {
+auto Matrix4<T>::operator,(T const&v) -> Matrix4<T>& {
   this->operator<<(v);
   return *this;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::ElementWiseProduct(Matrix4<T> const& m) {
+auto Matrix4<T>::ElementWiseProduct(Matrix4<T> const& m) -> Matrix4<T> {
   auto result = Matrix4<T>();
-  for (auto i = 0; i < 16; ++i) result.value[i] = value[i] * m.value[i];
+  for (auto i = 0; i < 16; ++i) result.value_[i] = value_[i] * m.value_[i];
   return result;
 }
 
 template <Number T>
-bool GluInvertMatrix(T const m[16], T inv_out[16]) {
-  T inv[16] = {0};
+auto GluInvertMatrix(std::array<T, 16> const m, std::array<T, 16> inv_out)
+    -> bool {
+  std::array<T, 16> inv{0};
   T det;
 
   inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] +
@@ -175,27 +177,28 @@ bool GluInvertMatrix(T const m[16], T inv_out[16]) {
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::Inverse() const {
+auto Matrix4<T>::Inverse() const -> Matrix4<T> {
   auto result = Matrix4<T>();
-  if (auto& v = result.value; GluInvertMatrix(value, v)) return result;
-  return zero;
+  if (auto& v = result.value_; GluInvertMatrix(value_, v)) return result;
+  return ZERO;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::Transpose() const {
+auto Matrix4<T>::Transpose() const -> Matrix4<T> {
   auto result = Matrix4<T>();
   for (auto i = 0; i < 4; ++i)
-    for (auto j = 0; j < 4; ++j) result.value[i * 4 + j] = value[j * 4 + i];
+    for (auto j = 0; j < 4; ++j) result.value_[i * 4 + j] = value_[j * 4 + i];
   return result;
 }
 
 template <Number T>
-Matrix4<T> Matrix4<T>::zero(0);
+const Matrix4<T> Matrix4<T>::ZERO(0);
 
 template <Number T>
-Matrix4<T> Matrix4<T>::identity(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+const Matrix4<T> Matrix4<T>::IDENTITY(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+                                      0, 1);
 
-Matrix GetRotateMatrix(Vector3d const& axis, double const& rad) {
+auto GetRotateMatrix(Vector3d const& axis, double const& rad) -> Matrix {
   Matrix const kN{0,        -axis(2), axis(1), 0, axis(2), 0, -axis(0), 0,
                   -axis(1), axis(0),  0,       0, 0,       0, 0,        0};
   Matrix const kAxt{axis(0) * axis(0),
@@ -214,16 +217,17 @@ Matrix GetRotateMatrix(Vector3d const& axis, double const& rad) {
                     0,
                     0,
                     0};
-  Matrix r = Matrix::identity * std::cos(rad) + kAxt * (1 - std::cos(rad)) +
+  Matrix r = Matrix::IDENTITY * std::cos(rad) + kAxt * (1 - std::cos(rad)) +
              kN * std::sin(rad);
   r(4, 4) = 1;
   return r;
 }
-Matrix GetTransformMatrix(Vector3d const& offset) {
-  return Matrix(1, 0, 0, offset[0], 0, 1, 0, offset[1], 0, 0, 1, offset[2], 0,
-                0, 0, 1);
+auto GetTransformMatrix(Vector3d const& offset) -> Matrix {
+  return {1, 0, 0, offset[0], 0, 1, 0, offset[1],
+          0, 0, 1, offset[2], 0, 0, 0, 1};
 }
-Matrix GetScaleMatrix(double const& x, double const& y, double const& z) {
+auto GetScaleMatrix(double const& x, double const& y, double const& z)
+    -> Matrix {
   return Matrix{x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1};
 }
 }  // namespace cherry::math

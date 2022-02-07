@@ -13,11 +13,10 @@
 
 #include <memory>
 
-#include "../common/intersection.h"
-#include "../common/ray.h"
 #include "../math/vector.h"
 #include "../utility/constant.h"
 #include "texture.h"
+
 
 namespace cherry {
 class Material {
@@ -36,28 +35,30 @@ class Material {
                     const math::Color& ks = {0, 0, 0},
                     const Attribute& attribute = Attribute::kDiffuse,
                     const math::Color& emit = {}, const double& ior = 1.5)
-      : attribute_(attribute), emission_(emit), kd_(kd), ks_(ks), ior_(ior) {}
+      : attribute(attribute), emission(emit), kd(kd), ks(ks), ior(ior) {}
   virtual ~Material() = default;
 
-  virtual bool HasEmission() { return emission_.Norm2() > kEpsilon; }
-  virtual math::Color GetEmission() { return emission_; }
+  virtual auto HasEmission() -> bool { return emission.Norm2() > EPSILON; }
+  virtual auto GetEmission() -> math::Color { return emission; }
 
-  virtual math::Color Evaluate(const math::Vector3d&, const math::Vector3d&,
-                               const math::Vector3d&) = 0;
-  virtual math::Vector3d Sample(const math::Vector3d&,
-                                const math::Vector3d&) = 0;
-  virtual double Pdf(const math::Vector3d&, const math::Vector3d&,
-                     const math::Vector3d&) = 0;
+  virtual auto Evaluate(const math::Vector3d&, const math::Vector3d&,
+                        const math::Vector3d&) -> math::Color = 0;
+  virtual auto Sample(const math::Vector3d&, const math::Vector3d&)
+      -> math::Vector3d = 0;
+  virtual auto Pdf(const math::Vector3d&, const math::Vector3d&,
+                   const math::Vector3d&) -> double = 0;
 
-  static math::Vector3d ToWorld(const math::Vector3d&, const math::Vector3d&);
+  static auto ToWorld(const math::Vector3d&, const math::Vector3d&)
+      -> math::Vector3d;
 
-  Attribute attribute_;
+  Attribute attribute;
+
  protected:
-  std::shared_ptr<Texture> texture_ = nullptr;
-  math::Color emission_;
-  math::Color kd_;
-  math::Color ks_;
-  double ior_;
+  std::shared_ptr<Texture> texture = nullptr;
+  math::Color emission;
+  math::Color kd;
+  math::Color ks;
+  double ior;
 };
 }  // namespace cherry
 

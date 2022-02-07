@@ -1,7 +1,7 @@
 // Copyright (c) 2021 QRWells. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
-// 
+//
 // This file is part of Project Cherry.
 // File Name   : intersection.h
 // Author      : QRWells
@@ -12,10 +12,10 @@
 #define INTERSECTION
 
 #include <memory>
-#include <numeric>
 
-#include "shading_point.h"
 #include "../math/vector.h"
+#include "../utility/constant.h"
+#include "shading_point.h"
 
 namespace cherry {
 class Object;
@@ -27,7 +27,7 @@ struct Intersection {
   math::Vector3d normal;
   ShadingPoint shading_point;
   std::shared_ptr<Material> material = nullptr;
-  double distance = std::numeric_limits<double>::infinity();
+  double distance = INFINITY;
 };
 }  // namespace cherry
 

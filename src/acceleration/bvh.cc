@@ -19,17 +19,17 @@ void Bvh::Construct(std::vector<std::shared_ptr<Object>> const& objects) {
   root_ = Build(objects);
 }
 
-bool Bvh::Intersect(Ray const& ray, Intersection& intersection) const {
+auto Bvh::Intersect(Ray const& ray, Intersection& intersection) const -> bool {
   if (root_ == nullptr) return false;
   return GetIntersection(ray, root_, intersection);
 }
 
-std::shared_ptr<BvhNode> Bvh::Build(
-    std::vector<std::shared_ptr<Object>> const& objects) {
+auto Bvh::Build(std::vector<std::shared_ptr<Object>> const& objects)
+    -> std::shared_ptr<BvhNode> {
   auto node = std::make_shared<BvhNode>();
 
   Box bound;
-  for (auto const& kO : objects) bound = bound.Union(kO->GetBounds());
+  for (auto const& k_o : objects) bound = bound.Union(k_o->GetBounds());
   std::vector<std::shared_ptr<Object>> left_shapes;
   std::vector<std::shared_ptr<Object>> right_shapes;
   switch (objects.size()) {
@@ -46,10 +46,9 @@ std::shared_ptr<BvhNode> Bvh::Build(
       node->bounds = node->left->bounds.Union(node->right->bounds);
       node->area = node->bounds.SurfaceArea();
       return node;
-    [[likely]] default: 
-      Box centroid;
-      for (auto const& kO : objects)
-        centroid = centroid.Union(kO->GetBounds().Centroid());
+      [[likely]] default : Box centroid;
+      for (auto const& k_o : objects)
+        centroid = centroid.Union(Box(k_o->GetBounds().Centroid()));
       auto total_area = centroid.SurfaceArea();
       size_t min_cost_coords = 0;
       size_t min_cost_index = 0;
@@ -72,12 +71,12 @@ std::shared_ptr<BvhNode> Bvh::Build(
           if (bid > kBucketCount - 1) bid = kBucketCount - 1;
 
           Box b = bounds_buckets[bid];
-          b = b.Union(objects[j]->GetBounds().Centroid());
+          b = b.Union(Box(objects[j]->GetBounds().Centroid()));
           bounds_buckets[bid] = b;
           count_bucket[bid] = count_bucket[bid] + 1;
           obj_map.insert({j, bid});
         }
-        
+
         index_map.emplace(i, obj_map);
 
         for (size_t j = 1; j < bounds_buckets.size(); j++) {
@@ -119,13 +118,14 @@ std::shared_ptr<BvhNode> Bvh::Build(
 
   return node;
 }
-bool Bvh::GetIntersection(Ray const& ray, const std::shared_ptr<BvhNode>& node,
-                          Intersection& intersection) {
+auto Bvh::GetIntersection(Ray const& ray, const std::shared_ptr<BvhNode>& node,
+                          Intersection& intersection) -> bool {
   if (node == nullptr) return false;
   if (node->left == nullptr && node->right == nullptr)
     return node->object->Intersect(ray, intersection);
 
-  Intersection inter1, inter2;
+  Intersection inter1;
+  Intersection inter2;
   auto const kI1 = GetIntersection(ray, node->left, inter1);
   auto const kI2 = GetIntersection(ray, node->right, inter2);
   intersection = inter1.distance < inter2.distance ? inter1 : inter2;

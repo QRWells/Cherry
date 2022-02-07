@@ -17,14 +17,16 @@
 
 namespace cherry {
 struct Light : Object {
-  Light(double const& intensity) : intensity(intensity) {}
+  explicit Light(double const& intensity) : intensity(intensity) {}
   double intensity = 0;
 
-  bool Intersect(const Ray&, Intersection&) const override { return false; }
-  Box GetBounds() override { return {}; }
-  void Sample(Intersection&, double&) override = 0;
-  [[nodiscard]] bool HasEmission() const override { return true; }
-  [[nodiscard]] double GetSurfaceArea() const override { return 0; }
+  auto Intersect(const Ray& ray, Intersection& inter) const -> bool override {
+    return false;
+  }
+  auto GetBounds() -> Box override { return {}; }
+  void Sample(Intersection& inter, double& d) override = 0;
+  [[nodiscard]] auto HasEmission() const -> bool override { return true; }
+  [[nodiscard]] auto GetSurfaceArea() const -> double override { return 0; }
 };
 }  // namespace cherry
 

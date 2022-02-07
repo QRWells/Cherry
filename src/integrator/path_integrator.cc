@@ -12,14 +12,14 @@
 
 #include <algorithm>
 
-#include "../common/cast_record.h"
 #include "../core/material.h"
 #include "../utility/random.h"
 
 namespace cherry {
 using namespace math;
 
-Point3 PathIntegrator::Li(Ray const& ray, std::shared_ptr<Scene> const& scene) {
+auto PathIntegrator::Li(Ray const& ray, std::shared_ptr<Scene> const& scene)
+    -> Point3 {
   Vector3d color(0.0);
   Vector3d it(1.0);
   Ray recursive_ray = ray;
@@ -29,13 +29,13 @@ Point3 PathIntegrator::Li(Ray const& ray, std::shared_ptr<Scene> const& scene) {
 
     // intersect with light
 
-    if (obj_inter.material->HasEmission())
+    if (obj_inter.material->HasEmission()) [[unlikely]]
       color += obj_inter.material->GetEmission() * it;
 
     // direct lighting
 
     Intersection light_inter;
-    double pdf_emit;
+    double pdf_emit = 0.0;
 
     scene->SampleLight(light_inter, pdf_emit);
     auto& n = obj_inter.normal;

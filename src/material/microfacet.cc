@@ -10,6 +10,7 @@
 
 #include "microfacet.h"
 
+#include "../core/material.h"
 #include "../utility/algorithm.h"
 #include "../utility/constant.h"
 #include "../utility/random.h"
@@ -17,17 +18,17 @@
 using namespace cherry::math;
 
 namespace cherry {
-Color MicrofacetMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
-                                   Vector3d const& n) {
+auto MicrofacetMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
+                                  Vector3d const& n) -> Color {
   auto const kV = -wi.Normalized();
-  auto& kL = wo;
-  auto const kH = (kV + kL).Normalized();
+  const auto& k_l = wo;
+  auto const kH = (kV + k_l).Normalized();
 
-  auto const kF0 = Mix(f0_, kd_, metallic_);
+  auto const kF0 = Mix(F0, kd, metallic_);
   auto const kAlpha = roughness_ * roughness_;
-  auto const k = std::pow(roughness_ + 1, 2.0) / 8.0;
+  auto const k_ = std::pow(roughness_ + 1, 2.0) / 8.0;
 
-  auto const kDotNl = std::max(n.Dot(kL), 0.0);
+  auto const kDotNl = std::max(n.Dot(k_l), 0.0);
   auto const kDotNv = std::max(n.Dot(kV), 0.0);
   auto const kDotHv = std::clamp(kH.Dot(kV), 0.0, 1.0);
 
@@ -35,7 +36,7 @@ Color MicrofacetMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
   auto const kF = FresnelSchlick(kDotHv, kF0);
 
   // Geometry(shadowing-masking term) GGX
-  auto const kG = GeometrySmith(n, kV, kL, k);
+  auto const kG = GeometrySmith(n, kV, k_l, k_);
 
   // Distribution of normals GGX
   auto const kD = DistributionGGXTR(n, kH, kAlpha);
@@ -47,24 +48,25 @@ Color MicrofacetMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
   auto kd = Vector3d(1.0) - kF;
   kd *= 1.0 - metallic_;
 
-  auto const kRes = kSpecular + kd * kd_ * kPiInv;
+  auto const kRes = kSpecular + kd * kd * PI_INV;
   return kRes;
 }
 
-Color MicrofacetMaterial::Sample(Vector3d const& wi, Vector3d const& n) {
-  // TODO: new sample method
+auto MicrofacetMaterial::Sample(Vector3d const& wi, Vector3d const& n)
+    -> Color {
+  // TODO(qrwells): new sample method
 
   auto const kX1 = GetRandomDouble();
   auto const kX2 = GetRandomDouble();
   auto const kZ = std::fabs(1.0 - 2.0 * kX1);
   auto const kR = std::sqrt(1.0 - kZ * kZ);
-  auto const kPhi = k2Pi * kX2;
+  auto const kPhi = PI_TIMES_2 * kX2;
   Vector3d const kLocalRay(kR * std::cos(kPhi), kR * std::sin(kPhi), kZ);
   return ToWorld(kLocalRay, n);
 }
 
-double MicrofacetMaterial::Pdf(Vector3d const& wi, Vector3d const& wo,
-                               Vector3d const& n) {
-  return wo.Dot(n) > 0.0 ? k2PiInv : 0.0;
+auto MicrofacetMaterial::Pdf(Vector3d const& wi, Vector3d const& wo,
+                             Vector3d const& n) -> double {
+  return wo.Dot(n) > 0.0 ? PI_TIMES_2_INV : 0.0;
 }
 }  // namespace cherry

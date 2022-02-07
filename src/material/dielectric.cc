@@ -8,6 +8,8 @@
 // Created at  : 2021/09/09 7:24
 // Description :
 
+#include <algorithm>
+
 #include "dielectric.h"
 
 #include "../utility/algorithm.h"
@@ -16,25 +18,26 @@
 using namespace cherry::math;
 
 namespace cherry {
-Color DielectricMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
-                                   Vector3d const& n) {
-  auto eta = wi.Dot(n) < 0 ? 1.0 / ior_ : ior_;
+auto DielectricMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
+                                  Vector3d const& n) -> Color {
+  auto eta = wi.Dot(n) < 0 ? 1.0 / ior : ior;
   eta = std::clamp(eta, 0.0, 1.0);
-  if (auto const kF = Fresnel(wi.Normalized(), n, 1.0, ior_);
+  if (auto const kF = Fresnel(wi.Normalized(), n, 1.0, ior);
       GetRandomDouble() > kF)
     return Color(std::pow(eta, 2));
-  return kd_;
+  return kd;
 }
 
-Vector3d DielectricMaterial::Sample(Vector3d const& wi, Vector3d const& n) {
-  if (auto const kF = Fresnel(wi.Normalized(), n, 1.0, ior_);
+auto DielectricMaterial::Sample(Vector3d const& wi, Vector3d const& n)
+    -> Vector3d {
+  if (auto const kF = Fresnel(wi.Normalized(), n, 1.0, ior);
       GetRandomDouble() > kF)
-    return Refract(wi.Normalized(), n, 1.0, ior_);
+    return Refract(wi.Normalized(), n, 1.0, ior);
   return Reflect(wi.Normalized(), n);
 }
 
-double DielectricMaterial::Pdf(Vector3d const&, Vector3d const&,
-                               Vector3d const&) {
+auto DielectricMaterial::Pdf(Vector3d const& wi, Vector3d const& wo,
+                             Vector3d const& n) -> double {
   return 1;
 }
 

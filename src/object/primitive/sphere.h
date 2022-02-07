@@ -10,20 +10,23 @@
 
 #ifndef CHERRY_OBJECT_PRIMITIVE_SPHERE
 #define CHERRY_OBJECT_PRIMITIVE_SPHERE
+#include <utility>
+
 #include "../../core/object.h"
 
 namespace cherry {
 class Sphere final : public Object {
  public:
-  Sphere(const math::Point3& center, const double& r,
-         const std::shared_ptr<Material>& m)
-      : material_(m), center_(center), radius_(r), radius2_(r * r) {}
+  Sphere(const math::Point3 &center, const double &r,
+         std::shared_ptr<Material> m)
+      : material_(std::move(m)), center_(center), radius_(r), radius2_(r * r) {}
 
-  bool Intersect(const Ray&, Intersection&) const override;
-  Box GetBounds() override;
-  void Sample(Intersection&, double&) override;
-  [[nodiscard]] bool HasEmission() const override;
-  [[nodiscard]] double GetSurfaceArea() const override;
+  auto Intersect(const Ray &ray, Intersection &intersection) const
+      -> bool override;
+  auto GetBounds() -> Box override;
+  void Sample(Intersection &intersection, double &pdf) override;
+  [[nodiscard]] auto HasEmission() const -> bool override;
+  [[nodiscard]] auto GetSurfaceArea() const -> double override;
 
  private:
   std::shared_ptr<Material> material_;

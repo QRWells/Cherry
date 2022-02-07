@@ -16,16 +16,17 @@
 namespace cherry {
 class DiffuseMaterial final : public Material {
  public:
-  DiffuseMaterial(const math::Color& kd, const math::Color& ks = {},
-                  const math::Color& emit = {})
+  explicit DiffuseMaterial(const math::Color& kd, const math::Color& ks = {},
+                           const math::Color& emit = {})
       : Material(kd, ks, Attribute::kDiffuse, emit) {}
 
-  math::Color Evaluate(const math::Vector3d&, const math::Vector3d&,
-                       const math::Vector3d&) override;
-  math::Color Sample(const math::Vector3d&, const math::Vector3d&) override;
-  double Pdf(const math::Vector3d&, const math::Vector3d&,
-             const math::Vector3d&) override;
-  //math::Color GetEmission() override;
+  auto Evaluate(const math::Vector3d& wi, const math::Vector3d& wo,
+                const math::Vector3d& n) -> math::Color override;
+  auto Sample(const math::Vector3d& wi, const math::Vector3d& n)
+      -> math::Color override;
+  auto Pdf(const math::Vector3d& wi, const math::Vector3d& wo,
+           const math::Vector3d& n) -> double override;
+  // math::Color GetEmission() override;
 };
 }  // namespace cherry
 

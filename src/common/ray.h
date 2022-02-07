@@ -1,7 +1,7 @@
 // Copyright (c) 2021 QRWells. All rights reserved.
 // Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
-// 
+//
 // This file is part of Project Cherry.
 // File Name   : ray.h
 // Author      : QRWells
@@ -21,15 +21,15 @@ struct Ray {
 
   Ray() = default;
 
-  explicit Ray(math::Point3 const&dir) : direction(dir) {
+  explicit Ray(math::Point3 const& dir) : direction(dir) {
     direction_inv = 1 / direction;
   }
-  Ray(math::Point3 const&origin, math::Vector3d const&dir)
+  Ray(math::Point3 const& origin, math::Vector3d const& dir)
       : origin(origin), direction(dir) {
     direction_inv = 1 / direction;
   }
 
-  math::Point3 operator()(double const&t) const {
+  auto operator()(double const& t) const -> math::Point3 {
     return origin + direction * t;
   }
 };

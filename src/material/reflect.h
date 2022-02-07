@@ -16,16 +16,17 @@
 namespace cherry {
 class ReflectMaterial final : public Material {
  public:
-  explicit ReflectMaterial(math::Color const& kd = {1.0, 1.0, 1.0},
-                           math::Color const& ks = {0, 0, 0},
-                           math::Color const& emit = {},
-                           double const& ior = 1.4)
+  explicit ReflectMaterial(math::Color const &kd = {1.0, 1.0, 1.0},
+                           math::Color const &ks = {0, 0, 0},
+                           math::Color const &emit = {},
+                           double const &ior = 1.4)
       : Material(kd, ks, Attribute::kReflect, emit, ior) {}
-  math::Color Evaluate(math::Vector3d const&, math::Vector3d const&,
-                       math::Vector3d const&) override;
-  math::Color Sample(math::Vector3d const&, math::Vector3d const&) override;
-  double Pdf(math::Vector3d const&, math::Vector3d const&,
-             math::Vector3d const&) override;
+  auto Evaluate(const math::Vector3d &wi, const math::Vector3d &wo,
+                const math::Vector3d &n) -> math::Color override;
+  auto Sample(const math::Vector3d &wi, const math::Vector3d &n)
+      -> math::Color override;
+  auto Pdf(const math::Vector3d &wi, const math::Vector3d &wo,
+           const math::Vector3d &n) -> double override;
 };
 }  // namespace cherry
 #endif  // !CHERRY_MATERIAL_REFLECT

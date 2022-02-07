@@ -23,17 +23,12 @@ class Object {
  public:
   Object() = default;
   virtual ~Object() = default;
-  virtual bool Intersect(const Ray &, Intersection &) const = 0;
-  virtual Box GetBounds() = 0;
+  virtual auto Intersect(const Ray &, Intersection &) const -> bool = 0;
+  virtual auto GetBounds() -> Box = 0;
   virtual void Sample(Intersection &, double &) = 0;
-  virtual void ComputeBox(std::vector<double> &, std::vector<double> &,
-                          const math::Vector3d *) const {
-    std::cerr << "virtual function called in Object :(\n";
-    exit(-1);
-  }
 
-  [[nodiscard]] virtual bool HasEmission() const = 0;
-  [[nodiscard]] virtual double GetSurfaceArea() const = 0;
+  [[nodiscard]] virtual auto HasEmission() const -> bool = 0;
+  [[nodiscard]] virtual auto GetSurfaceArea() const -> double = 0;
 };
 }  // namespace cherry
 #endif  // !OBJECT

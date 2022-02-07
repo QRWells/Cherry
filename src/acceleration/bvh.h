@@ -17,24 +17,24 @@
 
 namespace cherry {
 struct BvhNode {
-  BvhNode() : left(nullptr), right(nullptr), object(nullptr), area(0) {
-    bounds = Box();
-  }
+  BvhNode() : left(nullptr), right(nullptr), object(nullptr) { bounds = Box(); }
   std::shared_ptr<BvhNode> left;
   std::shared_ptr<BvhNode> right;
   std::shared_ptr<Object> object;
   Box bounds;
-  double area;
+  double area{};
 };
 class Bvh {
  public:
   Bvh() : root_(nullptr) {}
-  void Construct(const std::vector<std::shared_ptr<Object>>& objects);
-  bool Intersect(const Ray& ray, Intersection& intersection) const;
-  [[nodiscard]] static std::shared_ptr<BvhNode> Build(
-      const std::vector<std::shared_ptr<Object>>& objects);
-  [[nodiscard]] static bool GetIntersection(const Ray&, const std::shared_ptr<BvhNode>&,
-                                            Intersection&);
+  void Construct(const std::vector<std::shared_ptr<Object>> &objects);
+  auto Intersect(const Ray &ray, Intersection &intersection) const -> bool;
+  [[nodiscard]] static auto Build(
+      const std::vector<std::shared_ptr<Object>> &objects)
+      -> std::shared_ptr<BvhNode>;
+  [[nodiscard]] static auto GetIntersection(const Ray &,
+                                            const std::shared_ptr<BvhNode> &,
+                                            Intersection &) -> bool;
 
  private:
   std::shared_ptr<BvhNode> root_;

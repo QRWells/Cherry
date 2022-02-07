@@ -22,24 +22,25 @@ class Cuboid final : public Object {
  public:
   Cuboid(math::Vector3d const &center, double const &width,
          double const &height, double const &depth,
-         const std::shared_ptr<Material> &mt)
+         std::shared_ptr<Material> mt)
       : area_(8 * (width * height + width * depth + height * depth)),
-        material_(mt) {
+        material_(std::move(mt)) {
     min_ = {center.x - width / 2, center.y - height / 2, center.z - depth / 2};
     max_ = {center.x + width / 2, center.y + height / 2, center.z + depth / 2};
   }
 
   Cuboid(const math::Vector3d &min, const math::Vector3d &max,
-         const std::shared_ptr<Material> &mt)
-      : min_(min), max_(max), material_(mt) {
+         std::shared_ptr<Material> mt)
+      : min_(min), max_(max), material_(std::move(mt)) {
     area_ = Box(min, max).SurfaceArea();
   }
 
-  bool Intersect(const Ray &, Intersection &) const override;
-  Box GetBounds() override;
-  void Sample(Intersection &, double &) override;
-  [[nodiscard]] bool HasEmission() const override;
-  [[nodiscard]] double GetSurfaceArea() const override;
+  auto Intersect(const Ray &ray, Intersection &intersection) const
+      -> bool override;
+  auto GetBounds() -> Box override;
+  void Sample(Intersection &intersection, double &pdf) override;
+  [[nodiscard]] auto HasEmission() const -> bool override;
+  [[nodiscard]] auto GetSurfaceArea() const -> double override;
 
  private:
   math::Vector3d min_;

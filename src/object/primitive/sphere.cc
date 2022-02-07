@@ -16,12 +16,14 @@
 #include "../../utility/random.h"
 
 namespace cherry {
-bool Sphere::Intersect(const Ray& ray, Intersection& intersection) const {
+auto Sphere::Intersect(const Ray& ray, Intersection& intersection) const
+    -> bool {
   auto const kL = ray.origin - center_;
   auto const kA = ray.direction.Norm2();
   auto const kB = 2 * ray.direction.Dot(kL);
   auto const kC = kL.Norm2() - radius2_;
-  double t0, t1;
+  double t0 = 0;
+  double t1 = 0;
   if (!SolveQuadratic(kA, kB, kC, t0, t1)) return false;
   if (t0 < 1e-2) t0 = t1;
   if (t0 < 1e-1) return false;
@@ -34,13 +36,13 @@ bool Sphere::Intersect(const Ray& ray, Intersection& intersection) const {
   intersection = result;
   return true;
 }
-Box Sphere::GetBounds() {
+auto Sphere::GetBounds() -> Box {
   auto const kR = math::Vector3d(radius_);
   return {center_ - kR, center_ + kR};
 }
 void Sphere::Sample(Intersection& pos, double& pdf) {
-  double const kTheta = k2Pi * GetRandomDouble();
-  double const kPhi = kPi * GetRandomDouble();
+  double const kTheta = PI_TIMES_2 * GetRandomDouble();
+  double const kPhi = PI * GetRandomDouble();
   math::Vector3d const kDir(std::cos(kPhi), std::sin(kPhi) * std::cos(kTheta),
                             std::sin(kPhi) * std::sin(kTheta));
   pos.coordinate = center_ + radius_ * kDir;
@@ -48,8 +50,8 @@ void Sphere::Sample(Intersection& pos, double& pdf) {
   pos.material = material_;
   pdf = 1.0 / GetSurfaceArea();
 }
-bool Sphere::HasEmission() const {
-  return material_->GetEmission().Norm2() > kEpsilon;
+auto Sphere::HasEmission() const -> bool {
+  return material_->GetEmission().Norm2() > EPSILON;
 }
-double Sphere::GetSurfaceArea() const { return radius2_ * k4Pi; }
+auto Sphere::GetSurfaceArea() const -> double { return radius2_ * PI_TIMES_4; }
 }  // namespace cherry

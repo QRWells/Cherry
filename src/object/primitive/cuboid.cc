@@ -14,7 +14,8 @@
 #include "../../utility/random.h"
 
 namespace cherry {
-bool Cuboid::Intersect(Ray const& ray, Intersection& intersection) const {
+auto Cuboid::Intersect(Ray const& ray, Intersection& intersection) const
+    -> bool {
   Intersection result;
 
   auto const kTMin = (min_ - ray.origin) * ray.direction_inv;
@@ -49,9 +50,10 @@ bool Cuboid::Intersect(Ray const& ray, Intersection& intersection) const {
   intersection = result;
   return true;
 }
-Box Cuboid::GetBounds() { return Box(min_, max_); }
+auto Cuboid::GetBounds() -> Box { return {min_, max_}; }
 void Cuboid::Sample(Intersection& intersection, double& pdf) {
-  auto i = GetRandomDouble(), j = GetRandomDouble();
+  auto i = GetRandomDouble();
+  auto j = GetRandomDouble();
   int const k = static_cast<int>(GetRandomDouble() * 6);
   math::Vector3d coords;
   switch (k) {
@@ -84,8 +86,8 @@ void Cuboid::Sample(Intersection& intersection, double& pdf) {
   intersection.material = material_;
   pdf = 1.0 / area_;
 }
-bool Cuboid::HasEmission() const {
-  return material_->GetEmission().Norm2() > kEpsilon;
+auto Cuboid::HasEmission() const -> bool {
+  return material_->GetEmission().Norm2() > EPSILON;
 }
-double Cuboid::GetSurfaceArea() const { return area_; }
+auto Cuboid::GetSurfaceArea() const -> double { return area_; }
 }  // namespace cherry
