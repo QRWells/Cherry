@@ -1,9 +1,4 @@
-﻿# CMakeList.txt: Cherry 的 CMake 项目，在此处包括源代码并定义
-# 项目特定的逻辑。
-#
-cmake_minimum_required (VERSION 3.9)
-
-set(CMAKE_CXX_STANDARD 20)
+﻿cmake_minimum_required (VERSION 3.21)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
@@ -12,7 +7,7 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-#find_package(Eigen3 CONFIG REQUIRED)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable (Cherry
 "Cherry.cc" "Cherry.h"
@@ -54,10 +49,13 @@ add_executable (Cherry
 "utility/random.h" "utility/random.cc" 
 "utility/algorithm.h" "utility/algorithm.cc" 
 
-"integrator/path_integrator.h" "integrator/path_integrator.cc" )
+"integrator/path_integrator.h" "integrator/path_integrator.cc"  
+"utility/render_script_parser.h" "utility/render_script_parser.cc" 
+"core/renderer.h" "core/renderer.cc" "integrator/normal_integrator.h" 
+"integrator/normal_integrator.cc" 
+#"utility/sampler.h" "utility/sampler.cc"
+)
 
 if(OpenMP_CXX_FOUND)
     target_link_libraries(Cherry PUBLIC OpenMP::OpenMP_CXX)
 endif()
-
-#target_link_libraries(Cherry Eigen3::Eigen)
