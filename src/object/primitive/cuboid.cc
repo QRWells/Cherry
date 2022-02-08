@@ -8,10 +8,10 @@
 // Created at  : 2021/08/31 22:49
 // Description :
 
-#include "cuboid.h"
+#include "object/primitive/cuboid.h"
 
-#include "../../utility/constant.h"
-#include "../../utility/random.h"
+#include "utility/constant.h"
+#include "utility/random.h"
 
 namespace cherry {
 auto Cuboid::Intersect(Ray const& ray, Intersection& intersection) const

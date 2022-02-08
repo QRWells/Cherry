@@ -8,7 +8,6 @@
 // Created at  : 2021/08/26 19:39
 // Description :
 
-#include "light.h"
+#include "core/light.h"
 
-namespace cherry {
-}  // namespace cherry
+namespace cherry {}  // namespace cherry

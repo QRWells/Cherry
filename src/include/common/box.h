@@ -11,9 +11,9 @@
 #ifndef CHERRY_COMMON_BOX
 #define CHERRY_COMMON_BOX
 
-#include "../common/intersection.h"
-#include "../common/ray.h"
-#include "../math/vector.h"
+#include "common/intersection.h"
+#include "common/ray.h"
+#include "math/vector.h"
 
 namespace cherry {
 struct Box {

@@ -8,12 +8,12 @@
 // Created at  : 2021/08/26 18:46
 // Description :
 
-#include "sphere.h"
+#include "object/primitive/sphere.h"
 
-#include "../../core/material.h"
-#include "../../utility/algorithm.h"
-#include "../../utility/constant.h"
-#include "../../utility/random.h"
+#include "core/material.h"
+#include "utility/algorithm.h"
+#include "utility/constant.h"
+#include "utility/random.h"
 
 namespace cherry {
 auto Sphere::Intersect(const Ray& ray, Intersection& intersection) const

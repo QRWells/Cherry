@@ -8,10 +8,10 @@
 // Created at  : 2021/09/04 5:18
 // Description :
 
-#include "reflect.h"
+#include "material/reflect.h"
 
-#include "../utility/algorithm.h"
-#include "../utility/constant.h"
+#include "utility/algorithm.h"
+#include "utility/constant.h"
 
 using namespace cherry::math;
 

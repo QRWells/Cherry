@@ -13,9 +13,9 @@
 
 #include <memory>
 
-#include "../math/vector.h"
-#include "../utility/constant.h"
-#include "shading_point.h"
+#include "common/shading_point.h"
+#include "math/vector.h"
+#include "utility/constant.h"
 
 namespace cherry {
 class Object;

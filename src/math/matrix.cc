@@ -8,7 +8,7 @@
 // Created at  : 2021/08/24 15:34
 // Description :
 
-#include "matrix.h"
+#include "math/matrix.h"
 #include <array>
 
 namespace cherry::math {

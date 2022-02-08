@@ -10,10 +10,10 @@
 
 #include <algorithm>
 
-#include "dielectric.h"
+#include "material/dielectric.h"
 
-#include "../utility/algorithm.h"
-#include "../utility/random.h"
+#include "utility/algorithm.h"
+#include "utility/random.h"
 
 using namespace cherry::math;
 

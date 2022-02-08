@@ -8,10 +8,10 @@
 // Created at  : 2021/08/24 5:07
 // Description :
 
-#include "camera.h"
+#include "core/camera.h"
 
-#include "../math/vector.h"
-#include "../utility/random.h"
+#include "math/vector.h"
+#include "utility/random.h"
 
 namespace cherry {
 auto PerspectiveCamera::GenerateRay(const double& x, const double& y) const

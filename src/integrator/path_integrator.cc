@@ -8,12 +8,11 @@
 // Created at  : 2021/09/11 3:44
 // Description :
 
-#include "path_integrator.h"
-
 #include <algorithm>
 
-#include "../core/material.h"
-#include "../utility/random.h"
+#include "core/material.h"
+#include "integrator/path_integrator.h"
+#include "utility/random.h"
 
 namespace cherry {
 using namespace math;

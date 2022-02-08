@@ -8,10 +8,8 @@
 // Created at  : 2021/09/03 3:49
 // Description :
 
-#include "rasterizer.h"
+#include "core/rasterizer.h"
 
 namespace cherry {
-void Rasterizer::Render() {
-  
-}
+void Rasterizer::Render() {}
 }  // namespace cherry

@@ -8,12 +8,12 @@
 // Created at  : 2021/09/02 3:10
 // Description :
 
-#include "microfacet.h"
+#include "material/microfacet.h"
 
-#include "../core/material.h"
-#include "../utility/algorithm.h"
-#include "../utility/constant.h"
-#include "../utility/random.h"
+#include "core/material.h"
+#include "utility/algorithm.h"
+#include "utility/constant.h"
+#include "utility/random.h"
 
 using namespace cherry::math;
 

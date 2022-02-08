@@ -8,7 +8,7 @@
 // Created at  : 2021/09/14 14:43
 // Description :
 
-#include "shading_point.h"
+#include "common/shading_point.h"
 
 namespace cherry {
 auto ShadingPoint::ToLocal(math::Vector3d const& v) const -> math::Vector3d {

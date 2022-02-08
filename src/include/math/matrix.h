@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <array>
 
-#include "vector.h"
+#include "math/vector.h"
 
 namespace cherry::math {
 

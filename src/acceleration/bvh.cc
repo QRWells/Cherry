@@ -8,11 +8,11 @@
 // Created at  : 2021/08/24 5:48
 // Description :
 
-#include "bvh.h"
+#include "acceleration/bvh.h"
 
 #include <map>
 
-#include "../common/box.h"
+#include "common/box.h"
 
 namespace cherry {
 void Bvh::Construct(std::vector<std::shared_ptr<Object>> const& objects) {

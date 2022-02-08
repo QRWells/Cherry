@@ -11,9 +11,9 @@
 #ifndef CHERRY_ACCELERATION_BVH
 #define CHERRY_ACCELERATION_BVH
 
-#include "../common/intersection.h"
-#include "../common/ray.h"
-#include "../core/object.h"
+#include "common/intersection.h"
+#include "common/ray.h"
+#include "core/object.h"
 
 namespace cherry {
 struct BvhNode {

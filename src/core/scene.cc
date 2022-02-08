@@ -8,9 +8,9 @@
 // Created at  : 2021/08/23 20:26
 // Description :
 
-#include "scene.h"
+#include "core/scene.h"
 
-#include "../utility/random.h"
+#include "utility/random.h"
 
 namespace cherry {
 

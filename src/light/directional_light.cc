@@ -1,6 +1,6 @@
-#include "directional_light.h"
+#include "light/directional_light.h"
+#include "utility/random.h"
 
-#include "../utility/random.h"
 namespace cherry {
 void DirectionalLight::Sample(Intersection& intersection, double& p) {
   auto const kX = 1 - GetRandomDouble() * 2;

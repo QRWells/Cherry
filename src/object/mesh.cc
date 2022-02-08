@@ -8,7 +8,7 @@
 // Created at  : 2021/08/31 23:52
 // Description :
 
-#include "mesh.h"
+#include "object/mesh.h"
 
 namespace cherry {
 

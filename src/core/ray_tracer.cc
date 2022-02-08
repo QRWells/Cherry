@@ -8,12 +8,12 @@
 // Created at  : 2021/08/23 18:47
 // Description :
 
-#include "ray_tracer.h"
-
 #include <thread>
 
-#include "../utility/random.h"
+#include "core/ray_tracer.h"
 #include "omp.h"
+#include "utility/random.h"
+
 
 namespace cherry {
 void RayTracer::Render() {

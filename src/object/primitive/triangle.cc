@@ -1,8 +1,8 @@
-#include "triangle.h"
+#include "object/primitive/triangle.h"
 
-#include "../../core/material.h"
-#include "../../utility/constant.h"
-#include "../../utility/random.h"
+#include "core/material.h"
+#include "utility/constant.h"
+#include "utility/random.h"
 
 namespace cherry {
 auto Triangle::Intersect(const Ray& ray, Intersection& intersection) const

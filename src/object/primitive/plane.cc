@@ -8,10 +8,10 @@
 // Created at  : 2021/08/31 17:38
 // Description :
 
-#include "plane.h"
+#include "object/primitive/plane.h"
 
-#include "../../utility/constant.h"
-#include "../../utility/random.h"
+#include "utility/constant.h"
+#include "utility/random.h"
 
 namespace cherry {
 auto Plane::Intersect(Ray const& ray, Intersection& intersection) const

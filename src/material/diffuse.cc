@@ -8,10 +8,10 @@
 // Created at  : 2021/08/26 2:43
 // Description :
 
-#include "diffuse.h"
+#include "material/diffuse.h"
 
-#include "../utility/constant.h"
-#include "../utility/random.h"
+#include "utility/constant.h"
+#include "utility/random.h"
 
 namespace cherry {
 
