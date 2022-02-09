@@ -43,29 +43,19 @@ class Camera {
 class PerspectiveCamera final : public Camera {
  public:
   PerspectiveCamera(const math::Point3& look_from, const math::Point3& look_at,
-                    const math::Vector3d view_up, const double& fov,
+                    const math::Vector3d& view_up, const double& fov,
                     const double& aspect_ratio, const double& aperture,
-                    const double& focal_distance)
-      : Camera(look_from, fov, aspect_ratio, aperture, focal_distance) {
-    auto const kTheta = DegToRad(fov);
-    auto const kH = tan(kTheta / 2);
-    auto const kViewportHeight = 2.0 * kH;
-    auto const kViewportWidth = kViewportHeight * aspect_ratio;
-
-    w = (look_from - look_at).Normalized();
-    u = view_up.Cross(w).Normalized();
-    v = w.Cross(u);
-
-    horizontal = kViewportWidth * u * focal_distance;
-    vertical = -kViewportHeight * v * focal_distance;
-    top_left = position - horizontal / 2 - vertical / 2 - w * focal_distance;
-  }
+                    const double& focal_distance);
   [[nodiscard]] auto GenerateRay(const double& x, const double& y) const
       -> Ray override;
 };
 
 class OrthographicCamera final : public Camera {
  public:
+  OrthographicCamera(const math::Point3& look_from, const math::Point3& look_at,
+                     const math::Vector3d& view_up, const double& fov,
+                     const double& aspect_ratio, const double& aperture,
+                     const double& focal_distance);
   [[nodiscard]] auto GenerateRay(const double& x, const double& y) const
       -> Ray override;
 };
