@@ -1,19 +1,106 @@
-// Copyright (c) 2021 QRWells. All rights reserved.
-// Licensed under the MIT license.
-// See LICENSE file in the project root for full license information.
-//
-// This file is part of Project Cherry.
-// File Name   : sampler.cc
-// Author      : QRWells
-// Created at  : 2021/09/25 0:33
-// Description :
+/**
+ * @file sampler.cc
+ * @author QRWells (qirui.wang@moegi.waseda.jp)
+ * @brief Implementations of classes in sampler.h
+ * @version 0.1
+ * @date 2022-02-08
+ *
+ * @copyright Copyright (c) 2021 QRWells. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ */
 
-#include "sampler.h"
+#include "utility/sampler.h"
 
-#include "constant.h"
+#include <cstddef>
+
+#include "utility/constant.h"
 
 namespace cherry {
 using namespace math;
+
+#pragma region HelperMethods
+
+/**
+ * @brief
+ *
+ * @tparam T
+ * @tparam Predicate
+ * @param size
+ * @param pred
+ * @return T
+ */
+template <typename T, typename Predicate>
+auto FindInterval(const T& size, const Predicate& pred) -> T {
+  T first = 0;
+  T len = size;
+  while (len > 0) {
+    auto half = len >> 1;
+    if (auto middle = first + half; pred(middle)) {
+      first = middle + 1;
+      len -= half + 1;
+    } else {
+      len = half;
+    }
+  }
+  return std::clamp(first - 1, 0UL, size - 2);
+}
+
+#pragma endregion
+
+#pragma region Distribution1D
+
+Distribution1D::Distribution1D(std::initializer_list<double> list)
+    : func(list), cdf(list.size() + 1) {
+  cdf[0] = 0;
+  auto&& n = list.size();
+  for (int i = 1; i < n + 1; ++i)
+    cdf[i] = cdf[i - 1] + func[i - 1] / static_cast<double>(n);
+
+  func_int = cdf[n];
+  if (func_int < EPSILON)
+    for (int i = 1; i < n + 1; ++i)
+      cdf[i] = static_cast<double>(i) / static_cast<double>(n);
+  else
+    for (int i = 1; i < n + 1; ++i) cdf[i] /= func_int;
+}
+
+auto Distribution1D::DiscretePdf(const int& index) const -> double {
+  return func[index] / (func_int * Count());
+}
+
+auto Distribution1D::SampleDiscrete(const double& u, double* pdf,
+                                    double* u_remapped) const {
+  auto const kOffset = FindInterval(
+      cdf.size(), [&](size_t const& index) { return cdf[index] <= u; });
+
+  if (pdf != nullptr) *pdf = func[kOffset] / (func_int * Count());
+  if (u_remapped != nullptr)
+    *u_remapped = (u - cdf[kOffset]) / (cdf[kOffset + 1] - cdf[kOffset]);
+  return kOffset;
+}
+
+auto Distribution1D::SampleContinuous(const double& u, double* pdf,
+                                      uint64_t* off) const -> double {
+  auto const kOffset = FindInterval(
+      cdf.size(), [&](size_t const& index) { return cdf[index] <= u; });
+
+  if (off != nullptr) *off = kOffset;
+  double du = u - cdf[kOffset];
+  if (cdf[kOffset + 1] - cdf[kOffset] > 0)
+    du /= cdf[kOffset + 1] - cdf[kOffset];
+
+  if (pdf != nullptr) *pdf = func[kOffset] / func_int;
+
+  return (static_cast<double>(kOffset) + du) / Count();
+}
+auto Distribution1D::Count() const -> double {
+  return static_cast<double>(func.size());
+}
+#pragma endregion
+
+#pragma region Sampler
+
 auto Sampler::UniformSample1D() const -> double {
   static std::uniform_real_distribution<double> dist(0, 1);
   return dist(rng_);
@@ -98,4 +185,5 @@ auto Sampler::UniformSampleUInt1D(size_t const& from, size_t const& to) const
   std::uniform_int_distribution dist(from, to);
   return dist(rng_);
 }
+#pragma endregion
 }  // namespace cherry

@@ -1,91 +1,79 @@
-// Copyright (c) 2021 QRWells. All rights reserved.
-// Licensed under the MIT license.
-// See LICENSE file in the project root for full license information.
-//
-// This file is part of Project Cherry.
-// File Name   : sampler.h
-// Author      : QRWells
-// Created at  : 2021/09/25 0:32
-// Description :
+/**
+ * @file sampler.h
+ * @author QRWells (qirui.wang@moegi.waseda.jp)
+ * @brief Sampler used in rendering
+ * @version 0.1
+ * @date 2022-02-08
+ *
+ * @copyright Copyright (c) 2021 QRWells. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ */
 
 #ifndef CHERRY_UTILITY_SAMPLER
 #define CHERRY_UTILITY_SAMPLER
 
+#include <initializer_list>
 #include <random>
 
-#include "../math/vector.h"
-#include "constant.h"
+#include "math/vector.h"
+#include "utility/constant.h"
 
 namespace cherry {
 
-template <typename T, typename Predicate>
-auto FindInterval(const T &size, const Predicate &pred) -> T {
-  T first = 0;
-  T len = size;
-  while (len > 0) {
-    auto const kHalf = len >> 1;
-    if (auto middle = first + kHalf; pred(middle)) {
-      first = middle + 1;
-      len -= kHalf + 1;
-    } else
-      len = kHalf;
-  }
-  return std::clamp(first - 1, 0UL, size - 2);
-}
-
+/**
+ * @brief 1-dimension distribution based on
+ *
+ */
 struct Distribution1D {
-  Distribution1D(const double *f, const int &n) : func(f, f + n), cdf(n + 1) {
-    cdf[0] = 0;
-    for (int i = 1; i < n + 1; ++i) cdf[i] = cdf[i - 1] + func[i - 1] / n;
+  Distribution1D(std::initializer_list<double> list);
 
-    func_int = cdf[n];
-    if (func_int < EPSILON) {
-      for (int i = 1; i < n + 1; ++i) cdf[i] = static_cast<double>(i) / n;
-    } else {
-      for (int i = 1; i < n + 1; ++i) cdf[i] /= func_int;
-    }
-  }
+  /**
+   * @brief
+   *
+   * @return double
+   */
+  [[nodiscard]] auto Count() const -> double;
 
-  [[nodiscard]] auto Count() const -> double {
-    return static_cast<double>(func.size());
-  }
-
+  /**
+   * @brief
+   *
+   * @param u
+   * @param pdf
+   * @param off
+   * @return double
+   */
   auto SampleContinuous(const double &u, double *pdf,
-                        uint64_t *off = nullptr) const -> double {
-    auto const kOffset = FindInterval(
-        cdf.size(), [&](int const &index) { return cdf[index] <= u; });
-
-    if (off != nullptr) *off = kOffset;
-    double du = u - cdf[kOffset];
-    if (cdf[kOffset + 1] - cdf[kOffset] > 0)
-      du /= cdf[kOffset + 1] - cdf[kOffset];
-
-    if (pdf != nullptr) *pdf = func[kOffset] / func_int;
-
-    return (static_cast<double>(kOffset) + du) / Count();
-  }
-
+                        uint64_t *off = nullptr) const -> double;
+  /**
+   * @brief
+   *
+   * @param u
+   * @param pdf
+   * @param u_remapped
+   * @return auto
+   */
   auto SampleDiscrete(const double &u, double *pdf = nullptr,
-                      double *u_remapped = nullptr) const {
-    auto const kOffset = FindInterval(
-        cdf.size(), [&](const int &index) { return cdf[index] <= u; });
+                      double *u_remapped = nullptr) const;
 
-    if (pdf != nullptr) *pdf = func[kOffset] / (func_int * Count());
-    if (u_remapped != nullptr)
-      *u_remapped = (u - cdf[kOffset]) / (cdf[kOffset + 1] - cdf[kOffset]);
-    return kOffset;
-  }
-
-  [[nodiscard]] auto DiscretePdf(const int &index) const -> double {
-    return func[index] / (func_int * Count());
-  }
+  /**
+   * @brief
+   *
+   * @param index
+   * @return double
+   */
+  [[nodiscard]] auto DiscretePdf(const int &index) const -> double;
 
   std::vector<double> func, cdf;
   double func_int;
 };
 
+/**
+ * @brief Simple sampler
+ *
+ */
 class Sampler {
-  explicit Sampler() : rng_(dev_()) {}
+  Sampler() : rng_(dev_()) {}
 
   std::random_device dev_;
   std::mt19937 rng_;
