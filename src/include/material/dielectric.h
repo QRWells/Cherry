@@ -11,7 +11,7 @@
 #ifndef CHERRY_MATERIAL_DIELECTRIC
 #define CHERRY_MATERIAL_DIELECTRIC
 
-#include "../core/material.h"
+#include "core/material.h"
 
 namespace cherry {
 class DielectricMaterial final : public Material {

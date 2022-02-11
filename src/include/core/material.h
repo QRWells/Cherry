@@ -13,10 +13,9 @@
 
 #include <memory>
 
-#include "../math/vector.h"
-#include "../utility/constant.h"
+#include "math/vector.h"
 #include "texture.h"
-
+#include "utility/constant.h"
 
 namespace cherry {
 class Material {

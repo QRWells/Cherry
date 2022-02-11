@@ -11,8 +11,8 @@
 #ifndef CHERRY_CORE_LIGHT
 #define CHERRY_CORE_LIGHT
 
-#include "../common/intersection.h"
-#include "../math/vector.h"
+#include "common/intersection.h"
+#include "math/vector.h"
 #include "object.h"
 
 namespace cherry {

@@ -13,8 +13,8 @@
 
 #include <utility>
 
-#include "../../core/material.h"
-#include "../../core/object.h"
+#include "core/material.h"
+#include "core/object.h"
 
 namespace cherry {
 class Plane final : public Object {

@@ -11,7 +11,7 @@
 #ifndef CHERRY_MATERIAL_REFLECT
 #define CHERRY_MATERIAL_REFLECT
 
-#include "../core/material.h"
+#include "core/material.h"
 
 namespace cherry {
 class ReflectMaterial final : public Material {

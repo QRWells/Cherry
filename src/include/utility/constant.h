@@ -1,12 +1,14 @@
-// Copyright (c) 2021 QRWells. All rights reserved.
-// Licensed under the MIT license.
-// See LICENSE file in the project root for full license information.
-//
-// This file is part of Project Cherry.
-// File Name   : constant.h
-// Author      : QRWells
-// Created at  : 2021/08/24 5:53
-// Description :
+/**
+ * @file constant.h
+ * @author QRWells (qirui.wang@moegi.waseda.jp)
+ * @brief Constants
+ * @version 0.1
+ * @date 2022-02-09
+ *
+ * @copyright Copyright (c) 2021 QRWells. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ */
 
 #ifndef CHERRY_UTILITY_CONSTANT
 #define CHERRY_UTILITY_CONSTANT

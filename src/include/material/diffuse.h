@@ -11,7 +11,7 @@
 #ifndef CHERRY_MATERIAL_DIFFUSE
 #define CHERRY_MATERIAL_DIFFUSE
 
-#include "../core/material.h"
+#include "core/material.h"
 
 namespace cherry {
 class DiffuseMaterial final : public Material {

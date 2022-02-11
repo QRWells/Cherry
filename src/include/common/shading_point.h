@@ -11,8 +11,8 @@
 #ifndef CHERRY_COMMON_SHADING_POINT
 #define CHERRY_COMMON_SHADING_POINT
 
-#include "../math/vector.h"
-#include "../utility/algorithm.h"
+#include "math/vector.h"
+#include "utility/algorithm.h"
 
 namespace cherry {
 struct ShadingPoint {

@@ -12,7 +12,7 @@
 #define CHERRY_OBJECT_PRIMITIVE_SPHERE
 #include <utility>
 
-#include "../../core/object.h"
+#include "core/object.h"
 
 namespace cherry {
 class Sphere final : public Object {

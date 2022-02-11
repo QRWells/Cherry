@@ -11,12 +11,10 @@
 #ifndef CHERRY_LIGHT_PLANE_LIGHT
 #define CHERRY_LIGHT_PLANE_LIGHT
 
-#include "../core/light.h"
+#include "core/light.h"
 
 namespace cherry {
-struct PlaneLight : Light {
-  
-};
+struct PlaneLight : Light {};
 
 }  // namespace cherry
 

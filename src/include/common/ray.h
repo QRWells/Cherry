@@ -11,7 +11,7 @@
 #ifndef CHERRY_COMMON_RAY
 #define CHERRY_COMMON_RAY
 
-#include "../math/vector.h"
+#include "math/vector.h"
 
 namespace cherry {
 struct Ray {

@@ -11,7 +11,7 @@
 #ifndef CHERRY_UTILITY_RENDER_SCRIPT_PARSER
 #define CHERRY_UTILITY_RENDER_SCRIPT_PARSER
 
-#include "../core/renderer.h"
+#include "core/renderer.h"
 
 namespace cherry {
 class RenderScriptLexer {

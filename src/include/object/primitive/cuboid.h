@@ -13,9 +13,9 @@
 
 #include <utility>
 
-#include "../../core/material.h"
-#include "../../core/object.h"
-#include "../../math/vector.h"
+#include "core/material.h"
+#include "core/object.h"
+#include "math/vector.h"
 
 namespace cherry {
 class Cuboid final : public Object {

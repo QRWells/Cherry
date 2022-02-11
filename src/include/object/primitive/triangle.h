@@ -13,13 +13,13 @@
 
 #include <utility>
 
-#include "../../core/object.h"
+#include "core/object.h"
 
 namespace cherry {
 class Triangle final : public Object {
  public:
-  Triangle(const math::Point3& v0, const math::Point3& v1,
-           const math::Point3& v2, std::shared_ptr<Material> material)
+  Triangle(const math::Point3 &v0, const math::Point3 &v1,
+           const math::Point3 &v2, std::shared_ptr<Material> material)
       : v0_(v0),
         v1_(v1),
         v2_(v2),

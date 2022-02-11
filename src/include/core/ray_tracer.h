@@ -14,9 +14,9 @@
 #include <utility>
 #include <vector>
 
-#include "integrator.h"
-#include "renderer.h"
-#include "scene.h"
+#include "core/integrator.h"
+#include "core/renderer.h"
+#include "core/scene.h"
 
 namespace cherry {
 

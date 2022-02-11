@@ -1,7 +1,7 @@
 #ifndef CHERRY_LIGHT_DIRECTIONAL_LIGHT
 #define CHERRY_LIGHT_DIRECTIONAL_LIGHT
 
-#include "../core/light.h"
+#include "core/light.h"
 
 namespace cherry {
 struct DirectionalLight final : public Light {

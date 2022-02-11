@@ -1,13 +1,19 @@
-﻿// Cherry.h: 标准系统包含文件的包含文件
-// 或项目特定的包含文件。
+﻿/**
+ * @file Cherry.h
+ * @author QRWells (qirui.wang@moegi.waseda.jp)
+ * @brief Header file for main program
+ * @version 0.1
+ * @date 2022-02-11
+ *
+ * @copyright Copyright (c) 2021 QRWells. All rights reserved.
+ * Licensed under the MIT license.
+ *
+ */
 
 #pragma once
 
 #include <iostream>
 
-// TODO: 在此处引用程序需要的其他标头。
-
-#include "omp.h"
 #include "core/camera.h"
 #include "core/ray_tracer.h"
 #include "core/scene.h"
@@ -19,3 +25,4 @@
 #include "object/primitive/cuboid.h"
 #include "object/primitive/sphere.h"
 #include "object/primitive/triangle.h"
+#include "omp.h"

@@ -11,7 +11,7 @@
 #ifndef CHERRY_INTEGRATOR_PATH
 #define CHERRY_INTEGRATOR_PATH
 
-#include "../core/integrator.h"
+#include "core/integrator.h"
 
 namespace cherry {
 class PathIntegrator final : public Integrator {

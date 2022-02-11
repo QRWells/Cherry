@@ -13,8 +13,9 @@
 
 #include <random>
 
-#include "../math/vector.h"
 #include "constant.h"
+#include "math/vector.h"
+
 
 namespace cherry {
 inline auto GetRandomDouble() -> double {

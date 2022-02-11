@@ -13,7 +13,7 @@
 #ifndef CHERRY_INTEGRATOR_NORMAL_INTEGRATOR
 #define CHERRY_INTEGRATOR_NORMAL_INTEGRATOR
 
-#include "../core/integrator.h"
+#include "core/integrator.h"
 
 namespace cherry {
 class NormalIntegrator final : public Integrator {

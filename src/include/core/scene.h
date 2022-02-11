@@ -10,18 +10,19 @@
 
 #ifndef CHERRY_CORE_SCENE
 #define CHERRY_CORE_SCENE
+
 #include <vector>
 
-#include "../acceleration/bvh.h"
-#include "camera.h"
-#include "light.h"
-#include "object.h"
+#include "acceleration/bvh.h"
+#include "core/camera.h"
+#include "core/light.h"
+#include "core/object.h"
 
 namespace cherry {
 
 class Scene {
  public:
-  explicit Scene(const std::shared_ptr<Camera>& camera);
+  explicit Scene(std::shared_ptr<Camera> camera);
 
   double emit_area_sum;
   const std::shared_ptr<Camera> camera;

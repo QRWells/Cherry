@@ -11,8 +11,8 @@
 #ifndef CHERRY_CORE_CAMERA
 #define CHERRY_CORE_CAMERA
 
-#include "../common/ray.h"
-#include "../utility/algorithm.h"
+#include "common/ray.h"
+#include "utility/algorithm.h"
 
 namespace cherry {
 class Camera {

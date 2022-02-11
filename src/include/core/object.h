@@ -14,9 +14,9 @@
 #include <iostream>
 #include <vector>
 
-#include "../common/box.h"
-#include "../common/intersection.h"
-#include "../common/ray.h"
+#include "common/box.h"
+#include "common/intersection.h"
+#include "common/ray.h"
 
 namespace cherry {
 class Object {

@@ -14,7 +14,7 @@
 #include <memory>
 #include <vector>
 
-#include "../math/vector.h"
+#include "math/vector.h"
 #include "renderer.h"
 #include "scene.h"
 

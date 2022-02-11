@@ -12,7 +12,7 @@
 #ifndef CHERRY_MATERIAL_MICROFACET
 #define CHERRY_MATERIAL_MICROFACET
 
-#include "../core/material.h"
+#include "core/material.h"
 
 namespace cherry {
 class MicrofacetMaterial final : public Material {

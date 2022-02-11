@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-#include "../acceleration/bvh.h"
-#include "../core/object.h"
+#include "acceleration/bvh.h"
+#include "core/object.h"
 #include "primitive/triangle.h"
 
 namespace cherry {

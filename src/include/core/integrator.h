@@ -2,8 +2,8 @@
 #ifndef CHERRY_CORE_INTEGRATOR
 #define CHERRY_CORE_INTEGRATOR
 
-#include "../common/ray.h"
-#include "../math/vector.h"
+#include "common/ray.h"
+#include "math/vector.h"
 #include "scene.h"
 
 namespace cherry {

@@ -5,8 +5,9 @@
 #include <string>
 #include <vector>
 
-#include "../math/vector.h"
-#include "scene.h"
+#include "core/scene.h"
+#include "math/vector.h"
+
 
 namespace cherry {
 class Renderer {
