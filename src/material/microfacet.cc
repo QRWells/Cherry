@@ -24,7 +24,7 @@ auto MicrofacetMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
   const auto& k_l = wo;
   auto const kH = (kV + k_l).Normalized();
 
-  auto const kF0 = Mix(F0, kd, metallic_);
+  auto const kF0 = Interp(F0, kd, metallic_);
   auto const kAlpha = roughness_ * roughness_;
   auto const k_ = std::pow(roughness_ + 1, 2.0) / 8.0;
 
