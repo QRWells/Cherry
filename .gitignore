@@ -367,4 +367,5 @@ FodyWeavers.xsd
 compile_commands.json
 *.bak
 .vscode/
+.xmake/
 build/
