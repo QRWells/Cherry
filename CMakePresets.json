@@ -14,7 +14,8 @@
       "cacheVariables": {
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
         "CMAKE_C_COMPILER": "/bin/clang",
-        "CMAKE_CXX_COMPILER": "/bin/clang++"
+        "CMAKE_CXX_COMPILER": "/bin/clang++",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
       }
     },
     {
