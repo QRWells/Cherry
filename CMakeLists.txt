@@ -13,5 +13,3 @@ set(CHERRY_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
 include_directories(${CHERRY_SRC_INCLUDE_DIR})
 
 add_subdirectory ("src/")
-
-#SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/PROFILE")

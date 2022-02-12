@@ -1,6 +1,7 @@
 add_defines("SRC")
 
 add_requires("fmt", "openmp")
+add_requires("nlohmann_json", {alias = "json"})
 
 target("Cherry")
     set_default(true)
@@ -17,5 +18,5 @@ target("Cherry")
     add_files("**.cc")
     remove_files("object/mesh.cc", "utility/sampler.cc")
 
-    add_packages("fmt", "openmp")
+    add_packages("fmt", "openmp", "json")
 target_end()

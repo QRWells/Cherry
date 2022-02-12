@@ -2,6 +2,7 @@
 
 find_package(OpenMP)
 find_package(fmt)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -64,3 +65,4 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 target_link_libraries(Cherry PUBLIC fmt::fmt)
+target_link_libraries(Cherry PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
