@@ -8,9 +8,9 @@
 // Created at  : 2021/08/24 15:10
 // Description :
 
-#include "common/box.h"
-
 #include <algorithm>
+
+#include "common/box.h"
 
 namespace cherry {
 

@@ -10,11 +10,10 @@
  *
  */
 
-#include "utility/sampler.h"
-
 #include <cstddef>
 
 #include "utility/constant.h"
+#include "utility/sampler.h"
 
 namespace cherry {
 using namespace math;

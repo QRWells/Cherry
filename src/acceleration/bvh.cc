@@ -8,10 +8,9 @@
 // Created at  : 2021/08/24 5:48
 // Description :
 
-#include "acceleration/bvh.h"
-
 #include <map>
 
+#include "acceleration/bvh.h"
 #include "common/box.h"
 
 namespace cherry {

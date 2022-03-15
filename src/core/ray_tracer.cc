@@ -8,12 +8,14 @@
 // Created at  : 2021/08/23 18:47
 // Description :
 
+#include <cstdint>
 #include <thread>
 
-#include "core/ray_tracer.h"
+#include "fmt/core.h"
 #include "omp.h"
-#include "utility/random.h"
 
+#include "core/ray_tracer.h"
+#include "utility/random.h"
 
 namespace cherry {
 void RayTracer::Render() {
@@ -21,7 +23,7 @@ void RayTracer::Render() {
   auto const& k_width = width;
   auto const& k_height = height;
   auto const kSppInv = 1.0 / static_cast<double>(spp);
-  printf("trace with spp: %zu\n", spp);
+  fmt::print("trace with spp: {}\n", spp);
 
 #pragma omp parallel
   {
@@ -29,18 +31,17 @@ void RayTracer::Render() {
     auto const kThreadId = omp_get_thread_num();
     auto const kStart = kThreadId * k_height / kThreadCount;
     auto const kEnd = (kThreadId + 1) * k_height / kThreadCount;
-    for (auto j = kStart; j < kEnd; ++j) {
+    for (uint32_t j = kStart; j < kEnd; ++j) {
       auto m = j * k_width;
       for (uint32_t i = 0; i < k_width; ++i) {
         for (int k = 0; k < spp; k++) {
-          auto x = (i + GetRandomDouble()) / (width - 1);
-          auto y = (j + GetRandomDouble()) / (height - 1);
+          auto x = static_cast<double>(i) / static_cast<double>(width - 1);
+          auto y = static_cast<double>(j) / static_cast<double>(height - 1);
           frame_buffer[m] +=
               integrator_->Li(k_camera->GenerateRay(x, y), scene) * kSppInv;
         }
         ++m;
       }
-      printf(".");
     }
   }
 }
