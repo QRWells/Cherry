@@ -9,7 +9,7 @@ set(CXX_STANDARD_REQUIRED ON)
 
 project ("Cherry" LANGUAGES CXX)
 
-set(CHERRY_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
+set(CHERRY_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 include_directories(${CHERRY_SRC_INCLUDE_DIR})
 
 add_subdirectory ("src/")

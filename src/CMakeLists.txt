@@ -13,51 +13,42 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable (Cherry
-"Cherry.cc" "include/Cherry.h"
+    "acceleration/bvh.cc"
 
-"include/acceleration/bvh.h"        "acceleration/bvh.cc"
+    "core/ray_tracer.cc"
+    "core/rasterizer.cc"
+    "core/scene.cc"
+    "core/camera.cc"
+    "core/material.cc"
+    "core/texture.cc"
+    "core/light.cc"
+    "core/renderer.cc" 
 
-"include/core/ray_tracer.h"         "core/ray_tracer.cc"
-"include/core/integrator.h" 
-"include/core/rasterizer.h"         "core/rasterizer.cc"
-"include/core/scene.h"              "core/scene.cc"
-"include/core/object.h" 
-"include/core/camera.h"             "core/camera.cc"
-"include/core/material.h"           "core/material.cc"
-"include/core/texture.h"            "core/texture.cc"
-"include/core/light.h"              "core/light.cc"
-"include/core/renderer.h"           "core/renderer.cc" 
+    "common/box.cc"
+    "common/shading_point.cc" 
 
-"include/common/box.h"              "common/box.cc"
-"include/common/intersection.h"
-"include/common/ray.h"
-"include/common/shading_point.h"    "common/shading_point.cc" 
+    "math/matrix.cc"
+    "math/vector.cc"
 
-"include/math/matrix.h"             "math/matrix.cc" 
-"include/math/vector.h"             "math/vector.cc"
+    "material/diffuse.cc" 
+    "material/microfacet.cc"
+    "material/reflect.cc" 
+    "material/dielectric.cc"
 
-"include/material/diffuse.h"        "material/diffuse.cc" 
-"include/material/microfacet.h"     "material/microfacet.cc"
-"include/material/reflect.h"        "material/reflect.cc" 
-"include/material/dielectric.h"     "material/dielectric.cc"
+    "light/plane_light.cc"  
+    "light/directional_light.cc" 
 
-"include/light/plane_light.h"       "light/plane_light.cc"  
-"include/light/directional_light.h" "light/directional_light.cc" 
+#   "object/mesh.cc" 
+    "object/primitive/sphere.cc" 
+    "object/primitive/plane.cc" 
+    "object/primitive/cuboid.cc" 
+    "object/primitive/triangle.cc" 
 
-#"include/object/mesh.h" "object/mesh.cc" 
-"include/object/primitive/sphere.h"     "object/primitive/sphere.cc" 
-"include/object/primitive/plane.h"      "object/primitive/plane.cc" 
-"include/object/primitive/cuboid.h"     "object/primitive/cuboid.cc" 
-"include/object/primitive/triangle.h"   "object/primitive/triangle.cc" 
+    #   "utility/sampler.cc"
+    "utility/render_script/render_script_parser.cc" 
 
-"include/utility/constant.h"
-"include/utility/random.h"
-"include/utility/algorithm.h"
-"include/utility/render_script_parser.h"    "utility/render_script_parser.cc" 
-
-"include/integrator/normal_integrator.h"    "integrator/normal_integrator.cc" 
-"include/integrator/path_integrator.h"      "integrator/path_integrator.cc"  
-#"include/utility/sampler.h" "utility/sampler.cc"
+    "integrator/normal_integrator.cc" 
+    "integrator/path_integrator.cc"  
 )
 
 if(OpenMP_CXX_FOUND)

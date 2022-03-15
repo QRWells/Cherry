@@ -13,7 +13,7 @@ target("Cherry")
     add_vectorexts("avx", "avx2")
     add_vectorexts("sse", "sse2", "sse3", "ssse3")
 
-    add_includedirs("$(curdir)/src/include")
+    add_includedirs("$(curdir)/include")
 
     add_files("**.cc")
     remove_files("object/mesh.cc", "utility/sampler.cc")
