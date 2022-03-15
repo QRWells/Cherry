@@ -9,6 +9,9 @@
 // Description :
 
 #include "core/renderer.h"
+#include <fmt/core.h>
+#include <fstream>
+#include <ios>
 
 namespace cherry {
 
@@ -20,20 +23,27 @@ Renderer::Renderer(std::shared_ptr<Scene> scene, const uint64_t& width,
       scene(std::move(scene)) {}
 
 void Renderer::SavePpm(const std::string& file_name) const {
-  FILE* fp = fopen((file_name + ".ppm").c_str(), "wb");
-  if (fp != nullptr) {
-    (void)fprintf(fp, "P6\n%lu %lu\n255\n", width, height);
-    for (const auto& k_i : frame_buffer) {
-      static unsigned char color[3] = {0};
-      color[0] = static_cast<unsigned char>(
-          255 * std::pow(std::clamp(k_i.x, 0.0, 1.0), 0.7));
-      color[1] = static_cast<unsigned char>(
-          255 * std::pow(std::clamp(k_i.y, 0.0, 1.0), 0.7));
-      color[2] = static_cast<unsigned char>(
-          255 * std::pow(std::clamp(k_i.z, 0.0, 1.0), 0.7));
-      fwrite(color, 1, 3, fp);
-    }
-    fclose(fp);
+  using namespace std;
+
+  ofstream file(file_name + ".ppm", ios_base::binary | ios_base::out);
+
+  if (!file.is_open())
+    fmt::print(stderr, "Unable to write to file: {}\n", file_name + ".ppm");
+
+  auto header = fmt::format("P6\n{} {}\n255\n", width, height);
+  file << header;
+
+  for (const auto& k_i : frame_buffer) {
+    static array<char, 3> color;
+    color[0] =
+        static_cast<char>(255 * std::pow(std::clamp(k_i.x, 0.0, 1.0), 0.6));
+    color[1] =
+        static_cast<char>(255 * std::pow(std::clamp(k_i.y, 0.0, 1.0), 0.6));
+    color[2] =
+        static_cast<char>(255 * std::pow(std::clamp(k_i.z, 0.0, 1.0), 0.6));
+    file.write(color.data(), 3);
   }
+
+  file.close();
 }
 }  // namespace cherry
