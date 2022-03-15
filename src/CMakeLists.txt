@@ -13,6 +13,8 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable (Cherry
+    "Cherry.cc"
+
     "acceleration/bvh.cc"
 
     "core/ray_tracer.cc"
