@@ -11,19 +11,29 @@
 #ifndef CHERRY_UTILITY_RENDER_SCRIPT_PARSER
 #define CHERRY_UTILITY_RENDER_SCRIPT_PARSER
 
+#include <memory>
+#include <string_view>
+
 #include <nlohmann/json.hpp>
 
 #include "core/renderer.h"
-
-using json = nlohmann::json;
+#include "utility/render_script/render_data.h"
 
 namespace cherry {
+using json = nlohmann::json;
 class RenderScriptParser {
  public:
-  explicit RenderScriptParser(const json& lexer) {}
-  explicit RenderScriptParser(const std::vector<uint64_t>& codes) {}
-  auto Parse() -> std::shared_ptr<Renderer> const&;
+  auto static Parse(std::string_view script)
+      -> std::shared_ptr<Renderer> const&;
 };
+
+auto CreateMaterial(MaterialData const& data)
+    -> std::shared_ptr<Material> const&;
+auto CreateObject(ObjectData const& data) -> std::shared_ptr<Object> const&;
+auto CreateScene(SceneData const& data) -> std::shared_ptr<Scene> const&;
+auto CreateCamera(CameraData const& data) -> std::shared_ptr<Camera> const&;
+auto CreateRenderer(RenderData const& data) -> std::shared_ptr<Renderer> const&;
+
 }  // namespace cherry
 
 #endif  // !CHERRY_UTILITY_RENDER_SCRIPT_PARSER

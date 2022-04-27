@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "nlohmann/detail/macro_scope.hpp"
+#include "nlohmann/json.hpp"
 
 using uint32 = unsigned int;
 
@@ -37,9 +38,9 @@ struct MaterialData {
 
 struct CameraData {
   CameraType type;
-  std::array<double, 3> look_from;
-  std::array<double, 3> look_at;
-  std::array<double, 3> up_direction;
+  std::vector<double> look_from;
+  std::vector<double> look_at;
+  std::vector<double> up_direction;
   double fov;
   double aperture;
   double focal_distance;
@@ -47,13 +48,13 @@ struct CameraData {
 
 struct ObjectData {
   Primitive primitive;
-  std::array<double, 3> position;
+  std::vector<double> position;
   // TODO(qrwells): transform
 };
 
 struct LightData {
   LightType type;
-  std::array<double, 3> position;
+  std::vector<double> position;
   // TODO(qrwells): direction
 };
 
@@ -72,6 +73,14 @@ struct RenderData {
   std::vector<MaterialData> materials;
   SceneData scene_data;
 };
+
+void from_json(const nlohmann::json& j, CameraData& p);    // NOLINT
+void from_json(const nlohmann::json& j, ObjectData& p);    // NOLINT
+void from_json(const nlohmann::json& j, LightData& p);     // NOLINT
+void from_json(const nlohmann::json& j, SceneData& p);     // NOLINT
+void from_json(const nlohmann::json& j, RenderData& p);    // NOLINT
+void from_json(const nlohmann::json& j, MaterialData& p);  // NOLINT
+
 }  // namespace cherry
 
 #endif

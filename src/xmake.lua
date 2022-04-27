@@ -2,6 +2,7 @@ add_defines("SRC")
 
 add_requires("fmt", "openmp")
 add_requires("nlohmann_json", {alias = "json"})
+add_requires("magic_enum")
 
 target("Cherry")
     set_default(true)
@@ -15,8 +16,8 @@ target("Cherry")
 
     add_includedirs("$(curdir)/include")
 
-    add_files("**.cc")
-    remove_files("object/mesh.cc", "utility/sampler.cc")
+    add_files("$(curdir)/src/**.cc")
+    remove_files("$(curdir)/src/object/mesh.cc", "$(curdir)/src/utility/sampler.cc")
 
-    add_packages("fmt", "openmp", "json")
+    add_packages("fmt", "openmp", "json", "magic_enum")
 target_end()
