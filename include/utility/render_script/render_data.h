@@ -41,6 +41,7 @@ struct CameraData {
   std::vector<double> look_from;
   std::vector<double> look_at;
   std::vector<double> up_direction;
+  double aspect_ratio;
   double fov;
   double aperture;
   double focal_distance;

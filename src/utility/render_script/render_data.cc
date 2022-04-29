@@ -11,6 +11,7 @@ void from_json(const nlohmann::json& j, CameraData& p) {
   p.look_from = j["look_from"].get<vector<double>>();
   p.look_at = j["look_at"].get<vector<double>>();
   p.up_direction = j["up"].get<vector<double>>();
+  p.aspect_ratio = j["aspect_ratio"].get<double>();
   p.fov = j["fov"].get<double>();
   p.aperture = j["aperture"].get<double>();
   p.focal_distance = j["focal_distance"].get<double>();
