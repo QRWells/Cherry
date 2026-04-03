@@ -13,7 +13,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <variant>
 
 namespace cherry::math {
 
@@ -57,12 +56,12 @@ struct Vector2 {
 
   auto operator-() const -> Vector2<T> { return {-x, -y}; }
 
-  template <typename V>
+  template <Number V>
   auto operator*(V const &v) const -> Vector2<T> {
     return {x * v, y * v};
   }
 
-  template <typename V>
+  template <Number V>
   auto operator/(V const &v) const -> Vector2<T> {
     return {x / v, y / v};
   }
@@ -79,21 +78,21 @@ struct Vector2 {
     return *this;
   }
 
-  template <typename V>
+  template <Number V>
   auto operator*=(V const &v) -> Vector2<T> & {
     x *= v;
     y *= v;
     return *this;
   }
 
-  template <typename V>
+  template <Number V>
   auto operator/=(V const &v) -> Vector2<T> & {
     x /= v;
     y /= v;
     return *this;
   }
 
-  auto operator*(Vector2<T> const &v) -> Vector2<T> {
+  auto operator*(Vector2<T> const &v) const -> Vector2<T> {
     return {x * v.x, y * v.y};
   }
 
@@ -125,7 +124,7 @@ struct Vector2 {
   }
 };
 
-template <typename T, typename V>
+template <typename T, Number V>
 auto operator/(V const &v, Vector2<T> const vec) -> Vector2<T> {
   return {v / vec.x, v / vec.y};
 }
@@ -175,22 +174,22 @@ struct Vector3 {
 
   auto operator-() const -> Vector3<T> { return {-x, -y, -z}; }
 
-  template <typename V>
+  template <Number V>
   auto operator*(V const &v) const -> Vector3<T> {
     return {x * v, y * v, z * v};
   }
 
-  template <typename V>
+  template <Number V>
   friend auto operator*(V const &v, Vector3<T> const &vec) -> Vector3<T> {
     return {vec.x * v, vec.y * v, vec.z * v};
   }
 
-  template <typename V>
+  template <Number V>
   auto operator/(V const &v) const -> Vector3<T> {
     return {x / v, y / v, z / v};
   }
 
-  template <typename V>
+  template <Number V>
   friend auto operator/(V const &v, Vector3<T> const &vec) -> Vector3<T> {
     return {v / vec.x, v / vec.y, v / vec.z};
   }
@@ -209,7 +208,7 @@ struct Vector3 {
     return *this;
   }
 
-  template <typename V>
+  template <Number V>
   auto operator*=(V const &v) -> Vector3<T> & {
     x *= v;
     y *= v;
@@ -224,7 +223,7 @@ struct Vector3 {
     return *this;
   }
 
-  template <typename V>
+  template <Number V>
   auto operator/=(V const &v) -> Vector3<T> & {
     x /= v;
     y /= v;
@@ -232,7 +231,7 @@ struct Vector3 {
     return *this;
   }
 
-  auto operator*(Vector3<T> const &v) -> Vector3<T> {
+  auto operator*(Vector3<T> const &v) const -> Vector3<T> {
     return {x * v.x, y * v.y, z * v.z};
   }
 

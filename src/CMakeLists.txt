@@ -1,7 +1,8 @@
 ﻿cmake_minimum_required (VERSION 3.21)
 
 find_package(OpenMP)
-find_package(fmt)
+find_package(fmt CONFIG REQUIRED)
+find_package(CLI11 CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
 if (OPENMP_FOUND)
@@ -47,6 +48,7 @@ add_executable (Cherry
     "object/primitive/triangle.cc" 
 
     #   "utility/sampler.cc"
+    "utility/render_script/render_data.cc"
     "utility/render_script/render_script_parser.cc" 
 
     "integrator/normal_integrator.cc" 
@@ -59,3 +61,4 @@ endif()
 
 target_link_libraries(Cherry PUBLIC fmt::fmt)
 target_link_libraries(Cherry PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
+target_link_libraries(Cherry PRIVATE CLI11::CLI11)

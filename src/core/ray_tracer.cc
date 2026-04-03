@@ -9,13 +9,11 @@
 // Description :
 
 #include <cstdint>
-#include <thread>
 
 #include "fmt/core.h"
 #include "omp.h"
 
 #include "core/ray_tracer.h"
-#include "utility/random.h"
 
 namespace cherry {
 void RayTracer::Render() {

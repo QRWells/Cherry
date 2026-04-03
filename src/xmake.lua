@@ -1,6 +1,6 @@
 add_defines("SRC")
 
-add_requires("fmt", "openmp")
+add_requires("fmt", "openmp", "cli11")
 add_requires("nlohmann_json", {alias = "json"})
 add_requires("magic_enum")
 
@@ -19,5 +19,5 @@ target("Cherry")
     add_files("$(curdir)/src/**.cc")
     remove_files("$(curdir)/src/object/mesh.cc", "$(curdir)/src/utility/sampler.cc")
 
-    add_packages("fmt", "openmp", "json", "magic_enum")
+    add_packages("fmt", "openmp", "json", "magic_enum", "cli11")
 target_end()

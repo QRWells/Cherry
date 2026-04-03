@@ -10,6 +10,7 @@
 
 #include "core/renderer.h"
 #include <fmt/core.h>
+#include <array>
 #include <fstream>
 #include <ios>
 
@@ -34,7 +35,7 @@ void Renderer::SavePpm(const std::string& file_name) const {
   file << header;
 
   for (const auto& k_i : frame_buffer) {
-    static array<char, 3> color;
+    static std::array<char, 3> color;
     color[0] =
         static_cast<char>(255 * std::pow(std::clamp(k_i.x, 0.0, 1.0), 0.6));
     color[1] =
