@@ -52,39 +52,42 @@ auto Cuboid::Intersect(Ray const& ray, Intersection& intersection) const
 }
 auto Cuboid::GetBounds() -> Box { return {min_, max_}; }
 void Cuboid::Sample(Intersection& intersection, double& pdf) {
-  auto i = GetRandomDouble();
-  auto j = GetRandomDouble();
-  int const k = static_cast<int>(GetRandomDouble() * 6);
-  math::Vector3d coords;
-  switch (k) {
-    case 0:
-      coords = {0, i, j};
-      intersection.normal = {-1, 0, 0};
-      break;
-    case 1:
-      coords = {1, i, j};
-      intersection.normal = {1, 0, 0};
-      break;
-    case 2:
-      coords = {i, 0, j};
-      intersection.normal = {0, -1, 0};
-      break;
-    case 3:
-      coords = {i, 1, j};
-      intersection.normal = {0, 1, 0};
-      break;
-    case 4:
-      coords = {i, j, 0};
-      intersection.normal = {0, 0, -1};
-      break;
-    default:
-      coords = {i, j, 1};
-      intersection.normal = {0, 0, 1};
-      break;
+  auto const d = max_ - min_;
+  auto const area_yz = d.y * d.z;
+  auto const area_xz = d.x * d.z;
+  auto const area_xy = d.x * d.y;
+  auto const total_area = 2.0 * (area_xy + area_xz + area_yz);
+  if (total_area <= EPSILON) [[unlikely]] {
+    pdf = 0.0;
+    return;
   }
-  intersection.coordinate = (max_ - min_) * coords + min_;
+
+  auto const r = GetRandomDouble() * total_area;
+  auto const u = GetRandomDouble();
+  auto const v = GetRandomDouble();
+
+  if (r < area_yz) {
+    intersection.coordinate = {min_.x, min_.y + u * d.y, min_.z + v * d.z};
+    intersection.normal = {-1, 0, 0};
+  } else if (r < 2.0 * area_yz) {
+    intersection.coordinate = {max_.x, min_.y + u * d.y, min_.z + v * d.z};
+    intersection.normal = {1, 0, 0};
+  } else if (r < 2.0 * area_yz + area_xz) {
+    intersection.coordinate = {min_.x + u * d.x, min_.y, min_.z + v * d.z};
+    intersection.normal = {0, -1, 0};
+  } else if (r < 2.0 * area_yz + 2.0 * area_xz) {
+    intersection.coordinate = {min_.x + u * d.x, max_.y, min_.z + v * d.z};
+    intersection.normal = {0, 1, 0};
+  } else if (r < 2.0 * area_yz + 2.0 * area_xz + area_xy) {
+    intersection.coordinate = {min_.x + u * d.x, min_.y + v * d.y, min_.z};
+    intersection.normal = {0, 0, -1};
+  } else {
+    intersection.coordinate = {min_.x + u * d.x, min_.y + v * d.y, max_.z};
+    intersection.normal = {0, 0, 1};
+  }
+
   intersection.material = material_;
-  pdf = 1.0 / area_;
+  pdf = 1.0 / total_area;
 }
 auto Cuboid::HasEmission() const -> bool {
   return material_->GetEmission().Norm2() > EPSILON;

@@ -26,8 +26,27 @@ auto Scene::GetLights() const -> const std::vector<std::shared_ptr<Object>>& {
 }
 
 void Scene::SampleLight(Intersection& intersection, double& pdf) const {
-  auto const kIndex = GetRandomUInt(lights_.size() - 1);
-  lights_[kIndex]->Sample(intersection, pdf);
+  pdf = 0.0;
+  if (lights_.empty() || emit_area_sum <= EPSILON) return;
+
+  auto const kR = GetRandomDouble() * emit_area_sum;
+  double area_sum = 0.0;
+  for (auto const& light : lights_) {
+    auto const area = light->GetSurfaceArea();
+    area_sum += area;
+    if (kR <= area_sum) {
+      double pdf_area = 0.0;
+      light->Sample(intersection, pdf_area);
+      pdf = pdf_area * (area / emit_area_sum);
+      return;
+    }
+  }
+
+  // Fallback to the last light if floating point accumulation misses.
+  auto const area = lights_.back()->GetSurfaceArea();
+  double pdf_area = 0.0;
+  lights_.back()->Sample(intersection, pdf_area);
+  pdf = pdf_area * (area / emit_area_sum);
 }
 
 void Scene::Add(const std::shared_ptr<Object>& object) {

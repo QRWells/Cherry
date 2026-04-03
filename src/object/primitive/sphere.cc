@@ -41,12 +41,14 @@ auto Sphere::GetBounds() -> Box {
   return {center_ - kR, center_ + kR};
 }
 void Sphere::Sample(Intersection& pos, double& pdf) {
-  double const kTheta = PI_TIMES_2 * GetRandomDouble();
-  double const kPhi = PI * GetRandomDouble();
-  math::Vector3d const kDir(std::cos(kPhi), std::sin(kPhi) * std::cos(kTheta),
-                            std::sin(kPhi) * std::sin(kTheta));
-  pos.coordinate = center_ + radius_ * kDir;
-  pos.normal = kDir;
+  auto const u1 = GetRandomDouble();
+  auto const u2 = GetRandomDouble();
+  auto const z = 1.0 - 2.0 * u1;
+  auto const r = std::sqrt(std::max(0.0, 1.0 - z * z));
+  auto const phi = PI_TIMES_2 * u2;
+  math::Vector3d const dir(r * std::cos(phi), r * std::sin(phi), z);
+  pos.coordinate = center_ + radius_ * dir;
+  pos.normal = dir;
   pos.material = material_;
   pdf = 1.0 / GetSurfaceArea();
 }

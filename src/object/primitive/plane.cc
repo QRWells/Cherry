@@ -52,6 +52,6 @@ auto Plane::GetSurfaceArea() const -> double {
   if (e1_.Norm2() < EPSILON || e2_.Norm2() < EPSILON) [[unlikely]] {
     return std::numeric_limits<double>::max();
   }
-  return e1_.Norm() * e2_.Norm();
+  return e1_.Cross(e2_).Norm();
 }
 }  // namespace cherry

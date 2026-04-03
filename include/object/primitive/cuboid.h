@@ -23,7 +23,7 @@ class Cuboid final : public Object {
   Cuboid(math::Vector3d const &center, double const &width,
          double const &height, double const &depth,
          std::shared_ptr<Material> mt)
-      : area_(8 * (width * height + width * depth + height * depth)),
+      : area_(2 * (width * height + width * depth + height * depth)),
         material_(std::move(mt)) {
     min_ = {center.x - width / 2, center.y - height / 2, center.z - depth / 2};
     max_ = {center.x + width / 2, center.y + height / 2, center.z + depth / 2};

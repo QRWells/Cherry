@@ -20,36 +20,39 @@ using namespace cherry::math;
 namespace cherry {
 auto MicrofacetMaterial::Evaluate(Vector3d const& wi, Vector3d const& wo,
                                   Vector3d const& n) -> Color {
-  auto const kV = -wi.Normalized();
-  const auto& k_l = wo;
-  auto const kH = (kV + k_l).Normalized();
+  auto const kV = (-wi).Normalized();
+  auto const kL = wo.Normalized();
 
-  auto const kF0 = Interp(F0, kd, metallic_);
+  auto const kDotNl = n.Dot(kL);
+  auto const kDotNv = n.Dot(kV);
+  if (kDotNl <= 0.0 || kDotNv <= 0.0) return Color(0.0);
+
+  auto const kH_ = kV + kL;
+  if (kH_.Norm2() <= EPSILON) return Color(0.0);
+  auto const kH = kH_.Normalized();
+
+  auto const kF0 = Interp(F0, this->kd, metallic_);
   auto const kAlpha = roughness_ * roughness_;
-  auto const k_ = std::pow(roughness_ + 1, 2.0) / 8.0;
+  auto const k_ = std::pow(roughness_ + 1.0, 2.0) / 8.0;
 
-  auto const kDotNl = std::max(n.Dot(k_l), 0.0);
-  auto const kDotNv = std::max(n.Dot(kV), 0.0);
   auto const kDotHv = std::clamp(kH.Dot(kV), 0.0, 1.0);
 
   // Fresnel term
   auto const kF = FresnelSchlick(kDotHv, kF0);
 
   // Geometry(shadowing-masking term) GGX
-  auto const kG = GeometrySmith(n, kV, k_l, k_);
+  auto const kG = GeometrySmith(n, kV, kL, k_);
 
   // Distribution of normals GGX
   auto const kD = DistributionGGXTR(n, kH, kAlpha);
 
-  auto const kNom = kF * kG * kD;
-  auto const kDenom = 1.0 / (kDotNl * kDotNv * 4.0 + 1e-2);
+  auto const kDenom = 4.0 * kDotNl * kDotNv;
+  if (kDenom <= EPSILON) return Color(0.0);
 
-  auto const kSpecular = kNom * kDenom;
-  auto kd = Vector3d(1.0) - kF;
-  kd *= 1.0 - metallic_;
-
-  auto const kRes = kSpecular + kd * kd * PI_INV;
-  return kRes;
+  auto const kSpecular = (kF * kG * kD) / kDenom;
+  auto const kd_factor = (Vector3d(1.0) - kF) * (1.0 - metallic_);
+  auto const kDiffuse = kd_factor * this->kd * PI_INV;
+  return kSpecular + kDiffuse;
 }
 
 auto MicrofacetMaterial::Sample(Vector3d const& wi, Vector3d const& n)
